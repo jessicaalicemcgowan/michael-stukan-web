@@ -1,0 +1,81 @@
+.press {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-pink);
+  border-block: 2px solid var(--color-maroon);
+  padding-block: var(--space-10);
+  padding-inline: var(--gutter);
+}
+
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trail {
+    display: block;
+  }
+}
+
+.trailFrame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90px;
+  aspect-ratio: 3 / 3.5;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.trailFrame[data-active="true"] {
+  opacity: 1;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.lists {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  list-style: none;
+  font-family: var(--font);
+  font-size: var(--text-body);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+}
+
+@media (min-width: 1024px) {
+  .lists {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

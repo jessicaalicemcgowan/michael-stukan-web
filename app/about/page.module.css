@@ -1,0 +1,260 @@
+.about {
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.caption {
+  max-width: 320px;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+}
+
+/* Intro */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-10) var(--space-4);
+  padding-inline: var(--gutter);
+}
+
+.introText {
+  max-width: 700px;
+  text-align: center;
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+}
+
+.introImage {
+  position: relative;
+  width: 100%;
+  max-width: 459px;
+  aspect-ratio: 459.288 / 569.237;
+}
+
+/* Artist collaborations */
+
+.collabRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+  padding-inline: var(--gutter);
+}
+
+.collabLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.collabBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-family: var(--font);
+  font-size: var(--text-body-lg);
+  line-height: 1.5;
+  color: var(--color-maroon);
+}
+
+@media (min-width: 1024px) {
+  .collabRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-8);
+  }
+
+  .collabLabel {
+    width: 260px;
+    text-align: left;
+  }
+
+  .collabBody {
+    max-width: 690px;
+  }
+}
+
+/* Two-image pair */
+
+.pairRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+  padding-inline: var(--gutter);
+}
+
+.pairSmall {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 357px;
+}
+
+.pairSmallImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 357.273 / 256.183;
+}
+
+.pairLarge {
+  position: relative;
+  width: 100%;
+  max-width: 532px;
+  aspect-ratio: 532.229 / 697.405;
+}
+
+.pairTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(207, 188, 173, 0.4);
+  mix-blend-mode: multiply;
+}
+
+@media (min-width: 1024px) {
+  .pairRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+/* Bio */
+
+.bioRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+  padding-inline: var(--gutter);
+}
+
+.bioPortrait {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 342px;
+}
+
+.bioPortraitImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 342.281 / 418.554;
+}
+
+.bioText {
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--color-maroon);
+}
+
+@media (min-width: 1024px) {
+  .bioRow {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .bioText {
+    max-width: 690px;
+  }
+}
+
+/* Wide module */
+
+.wideModule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-4) var(--space-10);
+  padding-inline: var(--gutter);
+}
+
+.wideImage {
+  position: relative;
+  width: 100%;
+  max-width: 692px;
+  aspect-ratio: 692.502 / 461.724;
+}
+
+/* Stockists */
+
+.stockists {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-block: var(--space-12);
+  padding-inline: var(--gutter);
+}
+
+.stockistsLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.stockistsList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 576px;
+  align-self: flex-end;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+.stockistRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+}
+
+.stockistCity {
+  width: 100px;
+}
+
+.stockistCountry {
+  width: 40px;
+}
+
+.stockistStore {
+  flex: 1;
+}
+
+.stockistArrow {
+  color: var(--color-maroon);
+  opacity: 0.4;
+}
