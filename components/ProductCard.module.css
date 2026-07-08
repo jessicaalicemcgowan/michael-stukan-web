@@ -1,0 +1,53 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+  transition: opacity 300ms var(--ease-out);
+}
+
+.card[data-dimmed="true"] {
+  opacity: 0.2;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200 / 249.376;
+  border: 2px solid var(--color-maroon);
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 600ms var(--ease-out);
+}
+
+.card:hover .image {
+  transform: scale(1.03);
+}
+
+.meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: var(--font);
+  color: var(--color-maroon);
+}
+
+.add {
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  line-height: 0.75;
+}
+
+.price {
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+}
+
+.soldOut {
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: rgba(74, 35, 45, 0.6);
+}

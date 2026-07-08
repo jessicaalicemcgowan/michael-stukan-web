@@ -1,0 +1,131 @@
+.shop {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-16);
+  padding-inline: var(--gutter);
+}
+
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+}
+
+.gridToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.gridOption,
+.gridActive {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  letter-spacing: inherit;
+}
+
+.gridActive {
+  text-decoration: underline;
+}
+
+.filterToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.filterPanel {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-6);
+  padding-block: var(--space-3);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.filterOption,
+.filterActive {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.filterActive {
+  text-decoration: underline;
+}
+
+.filterClear {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.filterClear:disabled {
+  cursor: not-allowed;
+}
+
+.gridSml,
+.gridLrg {
+  display: grid;
+  gap: var(--space-4);
+  padding-block: var(--space-8) var(--space-2);
+}
+
+.gridSml {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gridLrg {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .gridSml {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gridLrg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gridSml {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .gridLrg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

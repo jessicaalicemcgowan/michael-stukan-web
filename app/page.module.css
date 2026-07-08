@@ -30,6 +30,7 @@
 
 .logotype {
   width: min(60vw, 420px);
+  aspect-ratio: 738.863 / 897.738;
   height: auto;
 }
 
@@ -82,6 +83,7 @@
 
 .artistSignature {
   width: min(70vw, 340px);
+  aspect-ratio: 342.623 / 57.9262;
   height: auto;
 }
 
