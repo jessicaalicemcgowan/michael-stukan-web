@@ -1,0 +1,42 @@
+export const collections = [
+  {
+    id: 1,
+    name: "Collection I",
+    season: "SS27",
+    artist: "Richard Kilroy",
+    url: "/collection",
+    previewImage: "/3b9ae38a0e5c8b7747e8e233b4d1a8b600f41750.png",
+  },
+  {
+    id: 2,
+    name: "Collection II",
+    season: "FW27",
+    artist: "Jessica Rose Bird",
+    url: "#",
+    previewImage: "/810e6f402ef0c401acd416ccd3810a0131ec8715.png",
+  },
+  {
+    id: 3,
+    name: "Collection III",
+    season: "SS28",
+    artist: "John Booth",
+    url: "#",
+    previewImage: "/d16b2a8a716f1aff81a776102cfaea579e6e609a.png",
+  },
+  {
+    id: 4,
+    name: "Collection IV",
+    season: "FW28",
+    artist: "Colm Mac Athlaoich",
+    url: "#",
+    previewImage: "/28bc13f77ef92fd92935737a84e7fa06112f708e.png",
+  },
+  {
+    id: 5,
+    name: "Collection V",
+    season: "SS29",
+    artist: "Faye Wei Wei",
+    url: "#",
+    previewImage: "/76120a8e5ea863917d96656cbe20ee24b45b6a87.png",
+  },
+];

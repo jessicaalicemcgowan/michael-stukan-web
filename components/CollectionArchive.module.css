@@ -1,0 +1,91 @@
+.archive {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-block: var(--space-12);
+  padding-inline: var(--gutter);
+}
+
+.label {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 576px;
+  align-self: flex-end;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+}
+
+.name {
+  width: 120px;
+}
+
+.season {
+  width: 50px;
+}
+
+.artist {
+  white-space: nowrap;
+}
+
+.current {
+  opacity: 0.3;
+}
+
+.link {
+  display: block;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.link:hover {
+  opacity: 0.5;
+}
+
+.preview {
+  position: absolute;
+  top: 50%;
+  left: var(--gutter);
+  width: 220px;
+  aspect-ratio: 3 / 4;
+  transform: translateY(-50%) scale(0.97);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+
+.preview[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.previewImage {
+  object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .preview {
+    display: none;
+  }
+}
