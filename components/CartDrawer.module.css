@@ -1,0 +1,240 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.backdrop[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3);
+  background: var(--color-blue);
+  color: var(--color-maroon);
+  transform: translateX(100%);
+  transition: transform var(--dur-base) var(--ease-out);
+  overflow-y: auto;
+}
+
+.drawer[data-open="true"] {
+  transform: translateX(0);
+}
+
+@media (min-width: 768px) {
+  .drawer {
+    width: 40vw;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+}
+
+.title {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.close,
+.remove,
+.apply {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  color: inherit;
+  cursor: pointer;
+}
+
+.close {
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  opacity: 0.6;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+}
+
+.empty {
+  font-family: var(--font);
+  font-size: var(--text-body);
+  color: var(--color-maroon);
+}
+
+.item {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.itemImage {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  aspect-ratio: 170 / 210.696;
+  border: 2px solid var(--color-maroon);
+}
+
+.image {
+  object-fit: cover;
+}
+
+.itemDetails {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.itemTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+}
+
+.itemPrice {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.itemMeta {
+  margin-top: var(--space-1);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.remove {
+  align-self: flex-start;
+  margin-top: auto;
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  opacity: 0.6;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.discountRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-maroon);
+}
+
+.discountInput {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.discountInput::placeholder {
+  color: var(--color-maroon);
+  opacity: 0.6;
+}
+
+.apply {
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+}
+
+.summaryTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  letter-spacing: 0.02em;
+}
+
+.checkout {
+  width: 100%;
+  padding: var(--space-3);
+  background: var(--color-maroon);
+  color: var(--color-bg);
+  border: none;
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.checkout:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.note {
+  font-family: var(--font);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+}

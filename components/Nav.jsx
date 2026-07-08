@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { toRoman, useCart } from "@/hooks/useCart";
 import styles from "./Nav.module.css";
 
 const primaryLinks = [
@@ -14,6 +15,7 @@ const primaryLinks = [
 export default function Nav() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { items, openCart } = useCart();
 
   const isActive = (href) => pathname === href || pathname.startsWith(`${href}/`);
   const closeMenu = () => setMenuOpen(false);
@@ -61,8 +63,13 @@ export default function Nav() {
           >
             Shop
           </Link>
-          <button type="button" className={styles.cart} aria-label="Open cart, 4 items">
-            <span>(IV)</span>
+          <button
+            type="button"
+            className={styles.cart}
+            aria-label={`Open cart, ${items.length} items`}
+            onClick={openCart}
+          >
+            <span>({toRoman(items.length)})</span>
             <img src="/icons/cart-dot.svg" alt="" className={styles.cartDot} />
           </button>
         </div>

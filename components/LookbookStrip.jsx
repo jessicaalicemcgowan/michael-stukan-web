@@ -2,13 +2,27 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
 import styles from "./LookbookStrip.module.css";
 
 export default function LookbookStrip({ items }) {
   const [size, setSize] = useState("sml");
   const [activeId, setActiveId] = useState(null);
+  const { addItem } = useCart();
 
   const active = items.find((item) => item.id === activeId);
+
+  const handleAdd = () => {
+    if (!active || active.soldOut) return;
+    addItem({
+      id: active.id,
+      name: active.name,
+      price: active.price,
+      image: active.image,
+      size: "II",
+      colour: active.colour,
+    });
+  };
 
   const selectItem = (id) => {
     setActiveId((current) => (current === id ? null : id));
@@ -61,13 +75,20 @@ export default function LookbookStrip({ items }) {
                 <p className={styles.revealPrice}>
                   {active.soldOut ? "sold out" : active.price}
                 </p>
-                <button
-                  type="button"
-                  className={styles.revealClose}
-                  onClick={() => setActiveId(null)}
-                >
-                  close
-                </button>
+                <div className={styles.revealActions}>
+                  {!active.soldOut && (
+                    <button type="button" className={styles.revealAdd} onClick={handleAdd}>
+                      add to bag
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className={styles.revealClose}
+                    onClick={() => setActiveId(null)}
+                  >
+                    close
+                  </button>
+                </div>
               </div>
             </>
           )}
