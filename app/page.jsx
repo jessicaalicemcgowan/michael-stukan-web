@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import FadeUp from "@/components/FadeUp";
 import styles from "./page.module.css";
 
 const lookbookImages = [
@@ -33,7 +34,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.lookbook}>
+      <FadeUp as="section" className={styles.lookbook}>
         <div className={styles.lookbookHeading}>
           <p className={styles.lookbookLabel}>Collection I SS27</p>
           <img
@@ -60,9 +61,9 @@ export default function Home() {
             />
           </div>
         </div>
-      </section>
+      </FadeUp>
 
-      <section className={styles.campaign}>
+      <FadeUp as="section" className={styles.campaign}>
         <div className={styles.campaignHeading}>
           <p className={styles.campaignLabel}>SS27</p>
           <Link href="/campaign" className={styles.campaignLink}>
@@ -77,13 +78,13 @@ export default function Home() {
             className={styles.image}
           />
         </div>
-      </section>
+      </FadeUp>
 
-      <section className={styles.shopLink}>
+      <FadeUp as="section" className={styles.shopLink}>
         <Link href="/shop" className={styles.shopCta}>
           Shop all <span aria-hidden="true">›</span>
         </Link>
-      </section>
+      </FadeUp>
     </main>
   );
 }

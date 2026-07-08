@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PressSection from "@/components/PressSection";
+import FadeUp from "@/components/FadeUp";
 import styles from "./page.module.css";
 
 const stockists = [
@@ -33,7 +34,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className={styles.collabRow}>
+      <FadeUp as="section" className={styles.collabRow}>
         <p className={styles.collabLabel}>Artist collaborations</p>
         <div className={styles.collabBody}>
           <p>
@@ -54,9 +55,9 @@ export default function About() {
             doesn&rsquo;t have on its own.
           </p>
         </div>
-      </section>
+      </FadeUp>
 
-      <div className={styles.pairRow}>
+      <FadeUp as="div" className={styles.pairRow}>
         <div className={styles.pairSmall}>
           <div className={styles.pairSmallImage}>
             <Image
@@ -79,9 +80,9 @@ export default function About() {
           />
           <div className={styles.pairTint} aria-hidden="true" />
         </div>
-      </div>
+      </FadeUp>
 
-      <section className={styles.bioRow}>
+      <FadeUp as="section" className={styles.bioRow}>
         <div className={styles.bioPortrait}>
           <div className={styles.bioPortraitImage}>
             <Image
@@ -107,9 +108,9 @@ export default function About() {
           on British Vogue, i-D and Kaltblut Magazine, and his work has been
           on display at the Lethaby Gallery.
         </p>
-      </section>
+      </FadeUp>
 
-      <section className={styles.wideModule}>
+      <FadeUp as="section" className={styles.wideModule}>
         <div className={styles.wideImage}>
           <Image
             src="/51ecd9127db5309a6bf137bb8fa1be17641f3e6e.png"
@@ -122,11 +123,13 @@ export default function About() {
           I / II — Toiles pinned and unpinned, over and over, until the line
           felt right.
         </p>
-      </section>
+      </FadeUp>
 
-      <PressSection />
+      <FadeUp>
+        <PressSection />
+      </FadeUp>
 
-      <section className={styles.stockists}>
+      <FadeUp as="section" className={styles.stockists}>
         <p className={styles.stockistsLabel}>Stockists</p>
         <div className={styles.stockistsList}>
           <div className={styles.divider} />
@@ -144,7 +147,7 @@ export default function About() {
             </div>
           ))}
         </div>
-      </section>
+      </FadeUp>
     </main>
   );
 }

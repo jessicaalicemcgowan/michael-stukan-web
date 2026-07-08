@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import LookbookStrip from "@/components/LookbookStrip";
 import CollectionArchive from "@/components/CollectionArchive";
+import FadeUp from "@/components/FadeUp";
 import { products } from "@/data/products";
 import styles from "./page.module.css";
 
@@ -34,7 +35,7 @@ export default function Collection() {
         </p>
       </header>
 
-      <section className={styles.aboutRow}>
+      <FadeUp as="section" className={styles.aboutRow}>
         <p className={styles.aboutLabel}>About the collection</p>
         <p className={styles.aboutBody}>
           Collection I is a study in restraint — tailoring stripped back to its
@@ -45,11 +46,13 @@ export default function Collection() {
           before a drawing is called done. Nothing here is precious. Pieces
           are cut to be worn hard, and to soften with time.
         </p>
-      </section>
+      </FadeUp>
 
-      <LookbookStrip items={lookbookItems} />
+      <FadeUp>
+        <LookbookStrip items={lookbookItems} />
+      </FadeUp>
 
-      <section className={styles.artistRow}>
+      <FadeUp as="section" className={styles.artistRow}>
         <p className={styles.artistLabel}>About the artist</p>
         <p className={styles.artistBody}>
           Richard Kilroy is an illustrator and printmaker based in London. His
@@ -58,10 +61,10 @@ export default function Collection() {
           unresolved. For Collection I, his sketchbooks became the starting
           point for print, embroidery, and silhouette.
         </p>
-      </section>
+      </FadeUp>
 
       <section className={styles.editorial}>
-        <div className={styles.moduleA}>
+        <FadeUp as="div" className={styles.moduleA}>
           <div className={styles.moduleAText}>
             <div className={styles.moduleAImage}>
               <Image
@@ -83,9 +86,9 @@ export default function Collection() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.moduleWide}>
+        <FadeUp as="div" className={styles.moduleWide}>
           <div className={styles.moduleWideImage}>
             <Image
               src="/51ecd9127db5309a6bf137bb8fa1be17641f3e6e.png"
@@ -98,9 +101,9 @@ export default function Collection() {
             I / II — Hand-finished jacquard, woven in small batches
             exclusively for Collection I.
           </p>
-        </div>
+        </FadeUp>
 
-        <div className={styles.moduleOffset}>
+        <FadeUp as="div" className={styles.moduleOffset}>
           <div className={styles.moduleOffsetLarge}>
             <Image
               src="/600c36c8475328317c3eb98b968648d364ea53a2.png"
@@ -122,9 +125,9 @@ export default function Collection() {
               + Sourced deadstock silk, hand-dyed in small batches.
             </p>
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.moduleStack}>
+        <FadeUp as="div" className={styles.moduleStack}>
           <div className={styles.moduleStackSmall}>
             <Image
               src="/982531d64d76229eaad212012fff7c5e787582c2.png"
@@ -144,9 +147,9 @@ export default function Collection() {
           <p className={styles.caption}>
             + Raw-edge tailoring, finished entirely by hand.
           </p>
-        </div>
+        </FadeUp>
 
-        <div className={styles.moduleReverse}>
+        <FadeUp as="div" className={styles.moduleReverse}>
           <div className={styles.moduleReverseSmall}>
             <div className={styles.moduleReverseSmallImage}>
               <Image
@@ -169,10 +172,10 @@ export default function Collection() {
             />
             <div className={styles.moduleReverseTint} aria-hidden="true" />
           </div>
-        </div>
+        </FadeUp>
       </section>
 
-      <section className={styles.campaign}>
+      <FadeUp as="section" className={styles.campaign}>
         <div className={styles.campaignHeading}>
           <p className={styles.campaignLabel}>SS27</p>
           <Link href="/campaign" className={styles.campaignLink}>
@@ -187,24 +190,24 @@ export default function Collection() {
             className={styles.image}
           />
         </div>
-      </section>
+      </FadeUp>
 
-      <div className={styles.shopCtaRow}>
+      <FadeUp as="div" className={styles.shopCtaRow}>
         <p className={styles.shopLabel}>
           Collection I <span>SS27</span>
         </p>
         <Link href="/shop" className={styles.shopCta}>
           Shop the collection <span aria-hidden="true">›</span>
         </Link>
-      </div>
+      </FadeUp>
 
-      <div className={styles.thumbStrip}>
+      <FadeUp as="div" className={styles.thumbStrip}>
         {thumbnails.map((product) => (
           <div key={product.id} className={styles.thumbFrame}>
             <Image src={product.image} alt={product.name} fill className={styles.image} />
           </div>
         ))}
-      </div>
+      </FadeUp>
 
       <div className={styles.shopFootnote}>
         <Link href="/shop">
@@ -212,7 +215,9 @@ export default function Collection() {
         </Link>
       </div>
 
-      <CollectionArchive />
+      <FadeUp>
+        <CollectionArchive />
+      </FadeUp>
     </main>
   );
 }

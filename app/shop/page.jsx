@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
+import FadeUp from "@/components/FadeUp";
 import { categories, colours, products } from "@/data/products";
 import styles from "./page.module.css";
 
@@ -116,11 +117,11 @@ export default function Shop() {
         </div>
       )}
 
-      <div className={grid === "lrg" ? styles.gridLrg : styles.gridSml}>
+      <FadeUp as="div" className={grid === "lrg" ? styles.gridLrg : styles.gridSml}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} dimmed={isDimmed(product)} />
         ))}
-      </div>
+      </FadeUp>
     </main>
   );
 }

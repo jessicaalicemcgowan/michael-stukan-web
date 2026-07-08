@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import FadeUp from "@/components/FadeUp";
 import styles from "./page.module.css";
 
 export default function Campaign() {
@@ -16,7 +17,7 @@ export default function Campaign() {
           />
         </div>
 
-        <div className={styles.alignEnd}>
+        <FadeUp as="div" className={styles.alignEnd}>
           <div className={styles.portrait}>
             <Image
               src="/b5d235f0332967a0d94c2f1e7ed397908fc2e2f9.png"
@@ -25,9 +26,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignCenter}>
+        <FadeUp as="div" className={styles.alignCenter}>
           <div className={styles.portrait}>
             <Image
               src="/12aa74b4aef63a6db0812d7831d9a166e7bde6b2.png"
@@ -36,9 +37,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignEnd}>
+        <FadeUp as="div" className={styles.alignEnd}>
           <div className={styles.portrait}>
             <Image
               src="/cacfb78687cb067fe1db807a56f38e0863350dcc.png"
@@ -47,9 +48,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignStart}>
+        <FadeUp as="div" className={styles.alignStart}>
           <div className={styles.wide}>
             <Image
               src="/99061b993677557089035dde969fd6aaa33effb1.png"
@@ -58,9 +59,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignCenter}>
+        <FadeUp as="div" className={styles.alignCenter}>
           <div className={styles.portrait}>
             <Image
               src="/9eadeeefd4546bcfd5f7836b052dd3215272063a.png"
@@ -69,9 +70,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignEnd}>
+        <FadeUp as="div" className={styles.alignEnd}>
           <div className={styles.portrait}>
             <Image
               src="/3f7eee2323a02b2af9ac47a6801c38cdf82a2d43.png"
@@ -80,9 +81,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignEnd}>
+        <FadeUp as="div" className={styles.alignEnd}>
           <div className={styles.portrait}>
             <Image
               src="/af15889fc55f7a2018137c2d84be6d3bd155c702.png"
@@ -91,9 +92,9 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
-        <div className={styles.alignCenter}>
+        <FadeUp as="div" className={styles.alignCenter}>
           <div className={styles.portrait}>
             <Image
               src="/001f208c1e5a801666a6008d35775fcb6c82fc30.png"
@@ -102,7 +103,7 @@ export default function Campaign() {
               className={styles.image}
             />
           </div>
-        </div>
+        </FadeUp>
 
         <div className={styles.full}>
           <Image
@@ -114,23 +115,23 @@ export default function Campaign() {
         </div>
       </div>
 
-      <p className={styles.credits}>
+      <FadeUp as="p" className={styles.credits}>
         credits — photography Otto Lang · hair Marisol Duarte · makeup Priya
         Anand · styling Théo Marchetti · assistance by Sam Okafor, Nadia
         Reyes, Luca Bianchi · location Villa Serena, Lake Como · talent
         Geoffrey Amadi, Elin Voss, Marcus Chen, Ingrid Solberg, Tobias
         Renner, Aya Fujimoto · special thanks Studio CGT, the Kilroy estate,
         Hangschlitt Archive
-      </p>
+      </FadeUp>
 
-      <div className={styles.ctaRow}>
+      <FadeUp as="div" className={styles.ctaRow}>
         <p className={styles.ctaLabel}>
           Collection I <span>SS27</span>
         </p>
         <Link href="/collection" className={styles.ctaLink}>
           View the collection <span aria-hidden="true">›</span>
         </Link>
-      </div>
+      </FadeUp>
     </main>
   );
 }
