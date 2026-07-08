@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import styles from "./LookbookStrip.module.css";
 
@@ -81,6 +82,9 @@ export default function LookbookStrip({ items }) {
                       add to bag
                     </button>
                   )}
+                  <Link href={`/shop/${active.id}`} className={styles.revealView}>
+                    view product
+                  </Link>
                   <button
                     type="button"
                     className={styles.revealClose}

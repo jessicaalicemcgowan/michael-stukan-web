@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import styles from "./ProductCard.module.css";
 
@@ -25,9 +26,9 @@ export default function ProductCard({ product, dimmed = false }) {
       data-dimmed={dimmed}
       aria-label={`${product.name}, ${product.soldOut ? "sold out" : product.price}`}
     >
-      <div className={styles.frame}>
+      <Link href={`/shop/${product.id}`} className={styles.frame}>
         <Image src={product.image} alt={product.name} fill className={styles.image} />
-      </div>
+      </Link>
       <div className={styles.meta}>
         <button
           type="button"
@@ -38,9 +39,12 @@ export default function ProductCard({ product, dimmed = false }) {
         >
           +
         </button>
-        <span className={product.soldOut ? styles.soldOut : styles.price}>
+        <Link
+          href={`/shop/${product.id}`}
+          className={product.soldOut ? styles.soldOut : styles.price}
+        >
           {product.soldOut ? "sold out" : product.price}
-        </span>
+        </Link>
       </div>
     </article>
   );
