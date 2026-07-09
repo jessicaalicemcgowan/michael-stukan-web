@@ -1,10 +1,12 @@
 .press {
   position: relative;
+  display: flex;
+  align-items: flex-start;
   overflow: hidden;
+  height: 840px;
   background: var(--color-pink);
   border-block: 2px solid var(--color-maroon);
-  padding-block: var(--space-10);
-  padding-inline: var(--gutter);
+  padding: 30px;
 }
 
 .trail {
@@ -25,7 +27,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 90px;
+  width: 270px;
   aspect-ratio: 3 / 3.5;
   opacity: 0;
   will-change: transform;
@@ -46,15 +48,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  width: 100%;
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.label {
+.label,
+.list li {
   font-family: var(--font);
   font-size: var(--text-nav);
   letter-spacing: 0.2em;
@@ -67,15 +65,27 @@
   flex-direction: column;
   gap: var(--space-1);
   list-style: none;
-  font-family: var(--font);
-  font-size: var(--text-body);
-  letter-spacing: 0.03em;
-  color: var(--color-maroon);
+}
+
+.pressGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 @media (min-width: 1024px) {
   .lists {
     flex-direction: row;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .lists > .label {
+    flex: 0 0 50%;
+  }
+
+  .pressGroup {
+    flex-direction: row;
+    gap: var(--space-12);
   }
 }

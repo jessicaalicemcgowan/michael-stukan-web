@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const LERP = 0.1;
+const LERP = 0.035;
 const MAX_ROTATION = 12;
 
 export function useCursorImages(count) {

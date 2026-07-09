@@ -6,7 +6,7 @@
   grid-template-columns: 40px 1fr 40px;
   align-items: center;
   height: 56px;
-  padding-inline: var(--gutter);
+  padding-inline: 20px;
   background: var(--color-bg);
 }
 
@@ -159,7 +159,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--space-2);
+    gap: 120px;
   }
 
   .brand {

@@ -18,7 +18,7 @@ export default function FadeUp({ children, as: Tag = "div", className = "", dela
           observer.unobserve(node);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "0px 0px 200px 0px" }
     );
 
     observer.observe(node);

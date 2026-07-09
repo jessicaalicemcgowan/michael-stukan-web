@@ -14,14 +14,13 @@ const stockists = [
 export default function About() {
   return (
     <main className={styles.about}>
-      <section className={styles.intro}>
+      <FadeUp as="section" className={styles.intro}>
         <p className={styles.introText}>
-          Founded by Michael Stukan in 2026, the studio began as a one-room
-          workshop in East London, built around a single idea: that menswear
-          could borrow its shape, its softness, its sense of drama, from
-          clothes never intended for men at all. Every collection since has
-          been a continuation of that argument, made in collaboration with
-          artists, dancers, and image-makers who share the same restlessness.
+          Founded by Michael Stukan in 2026, Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit. Phasellus varius tempor fringilla.
+          Vestibulum id purus quis purus convallis condimentum. Vestibulum et
+          semper nulla. In eu ante quis augue mollis vehicula semper id
+          risus. Aliquam mauris urna, bibendum a sem sollicitudin.
         </p>
         <div className={styles.introImage}>
           <Image
@@ -32,27 +31,22 @@ export default function About() {
             className={styles.image}
           />
         </div>
-      </section>
+      </FadeUp>
 
       <FadeUp as="section" className={styles.collabRow}>
         <p className={styles.collabLabel}>Artist collaborations</p>
         <div className={styles.collabBody}>
           <p>
-            Collaboration sits at the centre of the studio&rsquo;s practice.
-            Each collection begins not with a mood board but with a
-            conversation — an illustrator, a choreographer, a photographer
-            invited in before a single pattern is cut.
-          </p>
-          <p>
-            Collection I was shaped by eighteen months of correspondence with
-            illustrator Richard Kilroy, whose sketchbooks became the starting
-            point for print, embroidery, and silhouette. The resulting
-            garments carry his hand as much as ours.
-          </p>
-          <p>
-            Future seasons will continue this pattern: a rotating cast of
-            collaborators, each bringing a discipline the studio
-            doesn&rsquo;t have on its own.
+            Lorem ipsum dolor sit amet, consectetur varius to adipiscing
+            elit. Phasellus varius tempor fringilla. Vestibulum id wit purus
+            quis purus convallis condimentum. Vestibulum et semper to nulla.
+            In eu ante quis augue mollis vehicula semper id risus. Aliquam
+            mauris urna, bibendum a sem sollicitudin, lacinia tristique
+            nulla. Aenean at mauris ac ante vestibulum placerat. Lorem ipsum
+            dolor sit amet, consectetur varius to adipiscing elit. Phasellus
+            varius tempor fringilla. Vestibulum id wit purus quis purus
+            convallis condimentum. Vestibulum et semper to nulla. In eu ante
+            quis augue mollis vehicula semper id risus. Aliquam mauris urna.
           </p>
         </div>
       </FadeUp>

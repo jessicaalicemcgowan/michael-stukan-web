@@ -14,15 +14,6 @@ const cursorImages = [
   "/85fb268ddab3461c50eea3147b99fa87b44c4e05.png",
 ];
 
-const wornBy = [
-  "Geoffrey Amadi",
-  "Elin Voss",
-  "Marcus Chen",
-  "Ingrid Solberg",
-  "Tobias Renner",
-  "Aya Fujimoto",
-];
-
 const press = [
   "British Vogue",
   "Vogue USA",
@@ -56,15 +47,8 @@ export default function PressSection() {
       </div>
 
       <div className={styles.lists}>
-        <div className={styles.column}>
-          <p className={styles.label}>Worn by</p>
-          <ul className={styles.list}>
-            {wornBy.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        </div>
-        <div className={styles.column}>
+        <p className={styles.label}>Worn by</p>
+        <div className={styles.pressGroup}>
           <p className={styles.label}>Press</p>
           <ul className={styles.list}>
             {press.map((name) => (

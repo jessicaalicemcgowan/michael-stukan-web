@@ -1,7 +1,8 @@
 .fadeUp {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  transform: translateY(32px);
+  transition: opacity var(--dur-slowest) var(--ease-soft), transform var(--dur-slowest) var(--ease-soft);
+  will-change: opacity, transform;
 }
 
 .fadeUp[data-visible="true"] {

@@ -180,6 +180,123 @@
   opacity: 0.5;
 }
 
+/* Editorial */
+
+.editorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--gutter);
+}
+
+.editorialImage {
+  position: relative;
+  width: 100%;
+  max-width: 532px;
+  aspect-ratio: 532 / 697;
+}
+
+.editorialTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(207, 188, 173, 0.4);
+  mix-blend-mode: multiply;
+}
+
+.editorialCaption {
+  width: 100%;
+  max-width: 532px;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+}
+
+/* Final CTA + strip */
+
+.finalCta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding-block: var(--space-10) var(--space-6);
+  padding-inline: var(--gutter);
+}
+
+.finalCtaLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.finalCtaLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.finalCtaLink:hover {
+  opacity: 0.5;
+}
+
+.finalStrip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding-inline: var(--gutter);
+  padding-bottom: var(--space-8);
+}
+
+.finalStripFrame {
+  position: relative;
+  width: 160px;
+  aspect-ratio: 200 / 249;
+  flex-shrink: 0;
+  border: 2px solid var(--color-maroon);
+  overflow: hidden;
+}
+
+.finalStripCta {
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  white-space: nowrap;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.finalStripCta:hover {
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .finalStripFrame {
+    width: 180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .finalStrip {
+    flex-wrap: nowrap;
+  }
+
+  .finalStripFrame {
+    width: 200px;
+  }
+}
+
 @media (min-width: 768px) {
   .stripFrame {
     width: 260px;

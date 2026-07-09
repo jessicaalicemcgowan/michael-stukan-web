@@ -12,7 +12,7 @@ const lookbookItems = products.slice(0, 8);
 export default function Collection() {
   return (
     <main className={styles.collection}>
-      <header className={styles.header}>
+      <FadeUp as="header" className={styles.header}>
         <p className={styles.headerLabel}>
           Collection I <span>SS27</span>
         </p>
@@ -33,7 +33,7 @@ export default function Collection() {
         <p className={styles.headerCaption}>
           I / IV — Studio portraits from the Collection I development process.
         </p>
-      </header>
+      </FadeUp>
 
       <FadeUp as="section" className={styles.aboutRow}>
         <p className={styles.aboutLabel}>About the collection</p>

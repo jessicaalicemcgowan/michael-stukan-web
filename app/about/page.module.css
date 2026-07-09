@@ -27,7 +27,7 @@
 }
 
 .introText {
-  max-width: 700px;
+  max-width: 870px;
   text-align: center;
   font-family: var(--font);
   font-size: var(--text-heading);
@@ -68,7 +68,7 @@
   flex-direction: column;
   gap: var(--space-3);
   font-family: var(--font);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-body);
   line-height: 1.5;
   color: var(--color-maroon);
 }
@@ -77,7 +77,7 @@
   .collabRow {
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--space-8);
   }
 
@@ -99,7 +99,8 @@
   align-items: center;
   gap: var(--space-6);
   padding-block: var(--space-8);
-  padding-inline: var(--gutter);
+  padding-left: var(--gutter);
+  padding-right: 20px;
 }
 
 .pairSmall {
@@ -146,7 +147,7 @@
   align-items: center;
   gap: var(--space-6);
   padding-block: var(--space-8);
-  padding-inline: var(--gutter);
+  padding-inline: 20px;
 }
 
 .bioPortrait {
@@ -178,7 +179,7 @@
   }
 
   .bioText {
-    max-width: 690px;
+    max-width: 600px;
   }
 }
 

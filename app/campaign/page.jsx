@@ -7,7 +7,7 @@ export default function Campaign() {
   return (
     <main className={styles.campaign}>
       <div className={styles.essay}>
-        <div className={styles.full}>
+        <FadeUp as="div" className={styles.full}>
           <Image
             src="/592f5b2b5ed256ef69b0355ff34e513a61124165.png"
             alt="Collection I SS27 campaign"
@@ -15,7 +15,7 @@ export default function Campaign() {
             priority
             className={styles.image}
           />
-        </div>
+        </FadeUp>
 
         <FadeUp as="div" className={styles.alignEnd}>
           <div className={styles.portrait}>

@@ -2,109 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-10);
-  padding-block: var(--space-10) var(--space-8);
+  padding: 180px 20px 20px;
   background: var(--color-bg);
-}
-
-.editorial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding-inline: var(--gutter);
-}
-
-.editorialImage {
-  position: relative;
-  width: 100%;
-  max-width: 532px;
-  aspect-ratio: 532 / 697;
-}
-
-.image {
-  object-fit: cover;
-}
-
-.editorialTint {
-  position: absolute;
-  inset: 0;
-  background: rgba(207, 188, 173, 0.4);
-  mix-blend-mode: multiply;
-}
-
-.caption {
-  width: 100%;
-  max-width: 532px;
-  font-family: var(--font);
-  font-size: var(--text-caption);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-}
-
-.shopCta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  text-align: center;
-  padding-inline: var(--gutter);
-}
-
-.ctaLabel {
-  font-family: var(--font);
-  font-size: var(--text-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-maroon);
-}
-
-.ctaLink {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-family: var(--font);
-  font-size: var(--text-heading);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.ctaLink:hover {
-  opacity: 0.5;
-}
-
-.strip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  width: 100%;
-  padding-inline: var(--gutter);
-}
-
-.stripFrame {
-  position: relative;
-  width: 160px;
-  aspect-ratio: 200 / 249;
-  flex-shrink: 0;
-  border: 2px solid var(--color-maroon);
-  overflow: hidden;
-}
-
-.stripCta {
-  font-family: var(--font);
-  font-size: var(--text-caption);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-  white-space: nowrap;
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.stripCta:hover {
-  opacity: 0.5;
 }
 
 .utility {
@@ -113,8 +12,6 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  padding-inline: var(--gutter);
-  padding-top: var(--space-10);
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.06em;
@@ -130,29 +27,10 @@
   gap: var(--space-2);
 }
 
-.credit {
-  color: var(--color-text-muted);
-}
-
-@media (min-width: 768px) {
-  .stripFrame {
-    width: 180px;
-  }
-}
-
 @media (min-width: 1024px) {
-  .strip {
-    flex-wrap: nowrap;
-  }
-
-  .stripFrame {
-    width: 200px;
-  }
-
   .utility {
     flex-direction: row;
     justify-content: space-between;
-    padding-top: var(--space-16);
   }
 
   .utilityGroup {
