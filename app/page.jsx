@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import FadeUp from "@/components/FadeUp";
+import Hero from "@/components/Hero";
 import styles from "./page.module.css";
 
 const lookbookImages = [
@@ -21,26 +22,7 @@ const finalStripImages = [
 export default function Home() {
   return (
     <main className={styles.page}>
-      <FadeUp as="section" className={styles.hero}>
-        <Image
-          src="/b5d235f0332967a0d94c2f1e7ed397908fc2e2f9.png"
-          alt="Michael Stukan, Collection I SS27"
-          fill
-          priority
-          className={styles.heroImage}
-        />
-        <div className={styles.heroContent}>
-          <img
-            src="/icons/logotype-brush.svg"
-            alt="Michael Stukan"
-            className={styles.logotype}
-          />
-          <p className={styles.heroSeason}>SS27</p>
-          <Link href="/collection" className={styles.heroLink}>
-            View collection <span aria-hidden="true">›</span>
-          </Link>
-        </div>
-      </FadeUp>
+      <Hero />
 
       <FadeUp as="section" className={styles.lookbook}>
         <div className={styles.lookbookHeading}>

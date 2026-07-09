@@ -3,58 +3,6 @@
   flex-direction: column;
 }
 
-/* Hero */
-
-.hero {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  min-height: 100svh;
-}
-
-.heroImage {
-  object-fit: cover;
-  object-position: 50% 20%;
-  z-index: -1;
-}
-
-.heroContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  padding-block: var(--space-8) var(--space-10);
-  text-align: center;
-}
-
-.logotype {
-  width: min(60vw, 420px);
-  aspect-ratio: 738.863 / 897.738;
-  height: auto;
-}
-
-.heroSeason {
-  font-family: var(--font);
-  font-size: var(--text-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-white);
-}
-
-.heroLink {
-  font-family: var(--font);
-  font-size: var(--text-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-white);
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.heroLink:hover {
-  opacity: 0.5;
-}
-
 /* Lookbook */
 
 .lookbook {
@@ -94,7 +42,6 @@
   gap: var(--space-4);
   width: 100%;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
 }
 
 .stripFrame {
@@ -102,7 +49,6 @@
   width: 220px;
   aspect-ratio: 300 / 374;
   flex-shrink: 0;
-  scroll-snap-align: start;
 }
 
 .stripCta {

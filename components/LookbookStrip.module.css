@@ -38,7 +38,6 @@
   gap: var(--space-4);
   width: 100%;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
 }
 
 .frame {
@@ -50,7 +49,6 @@
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-  scroll-snap-align: start;
   transition: border-color var(--dur-fast) var(--ease-out);
 }
 

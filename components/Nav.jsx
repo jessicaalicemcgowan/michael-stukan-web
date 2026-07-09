@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toRoman, useCart } from "@/hooks/useCart";
 import styles from "./Nav.module.css";
 
@@ -14,14 +14,31 @@ const primaryLinks = [
 
 export default function Nav() {
   const pathname = usePathname();
+  const isHome = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
+  const [pastFold, setPastFold] = useState(!isHome);
   const { items, openCart } = useCart();
 
   const isActive = (href) => pathname === href || pathname.startsWith(`${href}/`);
   const closeMenu = () => setMenuOpen(false);
 
+  useEffect(() => {
+    if (!isHome) {
+      setPastFold(true);
+      return undefined;
+    }
+
+    setPastFold(false);
+    const handleScroll = () => {
+      setPastFold(window.scrollY > window.innerHeight * 0.9);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isHome]);
+
   return (
-    <header className={styles.nav}>
+    <header className={styles.nav} data-hidden={isHome && !pastFold}>
       <button
         type="button"
         className={styles.toggle}
