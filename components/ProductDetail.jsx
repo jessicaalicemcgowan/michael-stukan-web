@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
-import { sizes } from "@/data/products";
+import { sizes, getFulfilmentStatus } from "@/data/products";
+import ShopCollectionStrip from "@/components/ShopCollectionStrip";
 import styles from "./ProductDetail.module.css";
 
 const accordionSections = [
@@ -19,12 +20,25 @@ export default function ProductDetail({ product, related }) {
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
 
+  // "made_to_order" | "available" | "sold_out" — same rules everywhere
+  // else this is checked (Shop grid, ShopCollectionStrip, LookDrawer),
+  // so a made-to-order product with zero inventory still reads as
+  // purchasable here rather than sold out.
+  const fulfilmentStatus = getFulfilmentStatus(product);
+  const isSoldOut = fulfilmentStatus === "sold_out";
+  const statusLabel =
+    fulfilmentStatus === "made_to_order"
+      ? `Made to order · ${product.leadTime}`
+      : fulfilmentStatus === "sold_out"
+        ? "Sold out"
+        : "Available";
+
   const toggleSection = (id) => {
     setOpenSection((current) => (current === id ? null : id));
   };
 
   const handleAdd = () => {
-    if (product.soldOut) return;
+    if (isSoldOut) return;
     addItem({
       id: product.id,
       name: product.name,
@@ -46,12 +60,24 @@ export default function ProductDetail({ product, related }) {
   return (
     <main className={styles.product}>
       <div className={styles.info}>
+        <Link href="/shop" className={styles.backLink}>
+          <span aria-hidden="true">‹</span> Back to shop
+        </Link>
+
         <p className={styles.collectionLabel}>
-          Collection I <span>SS27</span>
+          I. <span>Richard Kilroy</span>
         </p>
         <h1 className={styles.name}>{product.name}</h1>
-        <p className={styles.price}>{product.soldOut ? "Sold out" : product.price}</p>
+        <p className={styles.price}>{product.price}</p>
         <p className={styles.description}>{product.description}</p>
+
+        {/* Only made_to_order gets its own status line — "Available" has
+            nothing to add beyond the price/CTA, and "Sold out" is
+            already said once by the disabled button below, so this
+            would just repeat it. */}
+        {fulfilmentStatus === "made_to_order" && (
+          <p className={styles.status}>{statusLabel}</p>
+        )}
 
         <div className={styles.sizeRow}>
           <span>size:</span>
@@ -61,7 +87,7 @@ export default function ProductDetail({ product, related }) {
               type="button"
               className={size === selectedSize ? styles.sizeActive : styles.sizeOption}
               onClick={() => setSelectedSize(size)}
-              disabled={product.soldOut}
+              disabled={isSoldOut}
             >
               {size}
             </button>
@@ -72,9 +98,9 @@ export default function ProductDetail({ product, related }) {
           type="button"
           className={styles.addToBag}
           onClick={handleAdd}
-          disabled={product.soldOut}
+          disabled={isSoldOut}
         >
-          {product.soldOut ? "sold out" : added ? "added" : "add to bag"}
+          {isSoldOut ? "sold out" : added ? "added" : "add to cart"}
         </button>
 
         <div className={styles.accordion}>
@@ -100,42 +126,63 @@ export default function ProductDetail({ product, related }) {
       </div>
 
       <div className={styles.gallery}>
-        {[product.image, product.image, product.image].map((src, index) => (
-          <div key={index} className={styles.galleryFrame}>
-            <Image src={src} alt={product.name} fill className={styles.image} />
+        {/* Three distinct shots (mix of product photography and a
+            lookbook look) rather than the same product image repeated. */}
+        {[
+          { src: product.image, alt: product.name },
+          { src: related[0].image, alt: related[0].name },
+          { src: "/lookbook-look-06.png", alt: "Collection I look" },
+        ].map((img, index) => (
+          <div key={`${img.src}-${index}`} className={styles.galleryFrame}>
+            <Image src={img.src} alt={img.alt} fill className={styles.image} />
           </div>
         ))}
       </div>
 
-      <div className={styles.artistNote}>
-        <div className={styles.artistImage}>
-          <Image
-            src="/923069e93063d2dfd897bb0ca8006c1cdfc7fe4a.png"
-            alt="Richard Kilroy"
-            fill
-            className={styles.image}
-          />
-          <div className={styles.artistTint} aria-hidden="true" />
+      {/* Same stacked two-image module as the Collection page (module 4),
+          minus its "+" shop-this-look button — this page has no product
+          drawer for it to open, so the caption is plain text. The side
+          margin lives on this outer wrap, not on .stackModule itself —
+          see the CSS comment. */}
+      <div className={styles.stackWrap}>
+        <div className={styles.stackModule}>
+          <div className={styles.stackSmall}>
+            <Image
+              src="/982531d64d76229eaad212012fff7c5e787582c2.png"
+              alt="Collection I detail"
+              fill
+              className={styles.image}
+            />
+          </div>
+          <div className={styles.stackTall}>
+            <Image
+              src="/cacfb78687cb067fe1db807a56f38e0863350dcc.png"
+              alt="Collection I look"
+              fill
+              className={styles.image}
+            />
+          </div>
+          <p className={styles.stackCaption}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+            vitae nulla bibendum, convallis tortor sed, accumsan elit.
+          </p>
         </div>
-        <p className={styles.artistCaption}>
-          I / III — Richard Kilroy&rsquo;s sketchbooks were the starting point
-          for this piece, translated from ink line to pattern and print.
-        </p>
       </div>
 
-      <div className={styles.relatedStrip}>
-        {related.map((item) => (
-          <Link key={item.id} href={`/shop/${item.id}`} className={styles.relatedFrame}>
-            <Image src={item.image} alt={item.name} fill className={styles.image} />
-          </Link>
-        ))}
-      </div>
-
-      <div className={styles.continueRow}>
-        <Link href="/shop">
-          SS27 <span aria-hidden="true">—</span> continue shopping ›
-        </Link>
-      </div>
+      <ShopCollectionStrip
+        images={related.map((item) => ({
+          src: item.image,
+          alt: item.name,
+          productId: item.id,
+        }))}
+        showHeading={false}
+        ctaText="Continue shopping"
+        showPrices
+        scrollInsetLeft
+        scrollFromTablet
+        scrollCtaInsetRight
+        finalStripCtaOnMobile
+      />
     </main>
   );
 }

@@ -2,17 +2,21 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-8);
   padding-block: var(--space-12);
   padding-inline: var(--gutter);
 }
 
 .label {
   font-family: var(--font);
-  font-size: var(--text-nav);
+  font-size: var(--text-caption);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-maroon);
+  /* Left-aligned, matching .aboutLabel's own base (pre-1024) style —
+     both read as left-aligned headings rather than centered. */
+  text-align: left;
+  white-space: nowrap;
 }
 
 .list {
@@ -20,7 +24,45 @@
   flex-direction: column;
   width: 100%;
   max-width: 576px;
-  align-self: flex-end;
+  /* Left-aligned like the label above it, instead of pinned to the right
+     edge. */
+  align-self: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .archive {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-8);
+    /* Matches app/collection/i-richard-kilroy's own .aboutRow container
+       exactly (same max-width, centering and --gutter padding), so
+       "Collection archive" lines up with "About the collection" and the
+       list lines up with its body text below, instead of the whole
+       label+list block being centered as its own separate unit. */
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .label {
+    font-size: var(--text-nav);
+    /* Same fixed width + left alignment as .aboutLabel, so both labels
+       start (and would wrap, if ever needed) at the same x position. */
+    width: 220px;
+    text-align: left;
+  }
+
+  .list {
+    align-self: auto;
+    flex: none;
+    /* A definite width, not auto — .row's fixed-width .name column plus
+       the artist name's own content give the list a natural/max-content
+       width well under 576px, so "auto" was shrinking the whole table
+       (and its divider lines) far narrower than intended instead of the
+       full designed width. Position now comes from .archive's own gap
+       (matching .aboutRow's gap after the label), not a manual offset. */
+    width: 576px;
+  }
 }
 
 .divider {
@@ -42,12 +84,9 @@
   width: 120px;
 }
 
-.season {
-  width: 50px;
-}
-
 .artist {
   white-space: nowrap;
+  margin-left: 40px;
 }
 
 .current {
@@ -56,17 +95,33 @@
 
 .link {
   display: block;
-  transition: opacity var(--dur-fast) var(--ease-out);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
 }
 
 .link:hover {
-  opacity: 0.5;
+  border-bottom-color: currentColor;
+}
+
+.item {
+  position: relative;
 }
 
 .preview {
   position: absolute;
+  /* .item is position: relative with no z-index of its own, so every row
+     shares one flat stack — later rows in the list paint over earlier
+     ones by DOM order alone. That let a lower row's divider line paint
+     on top of this preview whenever the (taller) image overlapped into
+     it. Raising the preview above that shared stack keeps the image in
+     front of every divider it overlaps, above or below its own row. */
+  z-index: 1;
   top: 50%;
-  left: var(--gutter);
+  left: 100%;
+  /* Pulled 150px left of its old spot (var(--space-6) clear of the row)
+     so it overlaps the table's divider lines instead of sitting beside
+     them. */
+  margin-left: calc(var(--space-6) - 150px);
   width: 220px;
   aspect-ratio: 3 / 4;
   transform: translateY(-50%) scale(0.97);
@@ -87,5 +142,17 @@
 @media (max-width: 767px) {
   .preview {
     display: none;
+  }
+
+  /* Matches the nav's own brand-name size (--text-nav) on mobile only —
+     desktop keeps --text-body untouched. */
+  .row {
+    font-size: var(--text-nav);
+  }
+
+  /* Undoes .artist's 40px desktop shift on mobile only — back to sitting
+     right after .name at .row's own gap (var(--space-3)). */
+  .artist {
+    margin-left: 0;
   }
 }

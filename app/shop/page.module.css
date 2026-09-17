@@ -1,7 +1,10 @@
 .shop {
   display: flex;
   flex-direction: column;
-  padding-block: var(--space-16);
+  margin-top: 36px;
+  /* Top stays var(--space-16); bottom (the space below the bespoke
+     section, since it's the page's last child) is 40px less. */
+  padding-block: var(--space-16) calc(var(--space-16) - 40px);
   padding-inline: var(--gutter);
 }
 
@@ -30,10 +33,18 @@
   color: inherit;
   cursor: pointer;
   letter-spacing: inherit;
+  /* border-bottom, not text-decoration — matches the site's other
+     underlines (Nav's .linkActive, etc.), which sit further clear of the
+     text than a native text-decoration underline does. Reserved
+     (transparent) on both states, not just .gridActive, so switching
+     which option is active never changes either button's box height —
+     that extra 0.5px only on the active one was nudging its text up a
+     couple of px against the row's shared align-items: center. */
+  border-bottom: 0.5px solid transparent;
 }
 
 .gridActive {
-  text-decoration: underline;
+  border-bottom-color: currentColor;
 }
 
 .filterToggle {
@@ -46,6 +57,13 @@
   font: inherit;
   color: inherit;
   cursor: pointer;
+}
+
+/* At this font's normal metrics, "+" renders noticeably larger/heavier
+   than "—" at the same font-size — this scales it down to read as the
+   same size as the em dash it swaps places with when the panel opens. */
+.filterIconPlus {
+  font-size: 0.8em;
 }
 
 .filterPanel {
@@ -73,10 +91,14 @@
   color: var(--color-maroon);
   cursor: pointer;
   text-transform: lowercase;
+  /* Same border-bottom underline as .gridActive above — reserved
+     (transparent) on both states so selecting/deselecting a filter never
+     shifts its own text. */
+  border-bottom: 0.5px solid transparent;
 }
 
 .filterActive {
-  text-decoration: underline;
+  border-bottom-color: currentColor;
 }
 
 .filterClear {
@@ -127,5 +149,110 @@
 
   .gridLrg {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Same label/body row layout as the Collection page's "about the
+   collection" section (.aboutRow/.aboutLabel/.aboutBody in
+   app/collection/i-richard-kilroy/page.module.css) — values copied
+   verbatim so the two match exactly. .aboutRow's own parent
+   (.collection) carries no padding of its own, so .aboutRow's
+   max-width:1200/margin-inline:auto/padding-inline:gutter compute
+   against the full, unpadded viewport. .shop (this page's root
+   wrapper) already applies padding-inline: var(--gutter) to
+   everything inside it, so without this wrapper, .bespokeRow's own
+   copy of that same rule would center and inset itself a second time
+   inside an already-narrowed box — landing at a different, narrower
+   position than .aboutRow's at every breakpoint. .bespokeBleed cancels
+   .shop's padding back out first, so .bespokeRow underneath sees the
+   same full-viewport-width, unpadded context .aboutRow does. */
+.bespokeBleed {
+  width: calc(100% + var(--gutter) * 2);
+  margin-left: calc(-1 * var(--gutter));
+  /* No divider above it; .gridSml/.gridLrg already carry var(--space-2)
+     (12px) of their own padding-bottom, so this is 100px minus that —
+     landing this section exactly 100px below the grid's last row, not
+     112px. */
+  margin-top: calc(100px - var(--space-2));
+}
+
+.bespokeRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: var(--space-8);
+  padding-inline: var(--gutter);
+}
+
+.bespokeLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.bespokeCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.bespokeBody {
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-maroon);
+}
+
+/* Same styling as .bespokeBody (it reads as a continuation of the body
+   copy, not a separate CTA button) — border-bottom, not underline,
+   matching the site's other link-style CTAs. */
+.bespokeInquire {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: fit-content;
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-maroon);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.bespokeInquire:hover {
+  border-bottom-color: currentColor;
+}
+
+/* Tablet/mobile have no hover state to reveal the underline, so it
+   stays visible at all times here instead of only on :hover — same
+   treatment as the PDP's back link and "continue shopping" CTA. */
+@media (max-width: 1023px) {
+  .bespokeInquire {
+    border-bottom-color: currentColor;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bespokeRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .bespokeLabel {
+    width: 260px;
+    text-align: left;
+  }
+
+  .bespokeCol {
+    max-width: 690px;
   }
 }

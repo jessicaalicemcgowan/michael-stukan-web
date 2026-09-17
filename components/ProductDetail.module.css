@@ -2,7 +2,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
-  padding-block: var(--space-16) var(--space-4);
+  margin-top: 36px;
+  /* 30px less than the usual var(--space-16) top inset, now that
+     .backLink no longer sits above .collectionLabel taking up its own
+     space — this is the gap directly above "I. Richard Kilroy". */
+  padding-block: calc(var(--space-16) - 30px) var(--space-4);
 }
 
 .image {
@@ -10,6 +14,13 @@
 }
 
 .info {
+  /* Positioning context for .backLink below — its bottom:0 anchors to
+     this box's own bottom edge, which (since .info has no padding-
+     block and .accordion, its last child, ends in a bare divider with
+     nothing after it) lands exactly on the bottom of the final divider
+     below the "care" row, however tall the accordion panels above it
+     happen to be. */
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,9 +29,66 @@
   text-align: center;
 }
 
+.backLink {
+  /* Taken out of .info's flex flow (and off its own centered text-align)
+     so it can be pinned to a specific corner instead of stacking inline
+     with the rest of .info's centered content. */
+  position: absolute;
+  bottom: 0;
+  /* Nav's brand ("MICHAEL STUKAN") sits at a flat 20px from the left
+     edge at every breakpoint (Nav.module.css's .nav uses a fixed
+     padding-inline: 20px, not the responsive --gutter token) — shifted
+     20px past that (to 40px) per request, so this no longer tracks the
+     brand's own position exactly. Measured from .info's own left edge,
+     which (no horizontal margin on .info) is the same coordinate as
+     .product's. */
+  left: 40px;
+  display: inline-flex;
+  align-items: center;
+  /* Half of var(--space-1) (8px) — tighter than the site's usual icon/
+     text gap so "‹" reads as closer to "Back to shop". */
+  gap: 4px;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.backLink:hover {
+  border-bottom-color: currentColor;
+}
+
+/* Below 760px only: bottom:0 (above) tracks .info's own bottom edge,
+   which on these narrower layouts lands the link down near/over the
+   "care" row instead of the page's top-left corner. Pinned to the top
+   instead, using the same math this file already leans on elsewhere:
+   the mobile nav bar is 56px tall (Nav.module.css), so 56px + 10px
+   (originally 40px, moved up 30px per request) = 66px is the target
+   offset from the very top of the page. .info's own top offset from
+   the page's top is .product's flat 36px nav-clearance margin plus its
+   padding-top (var(--space-16) minus the 30px already trimmed off it
+   above) — so top, measured from .info, is
+   66 - 36 - (var(--space-16) - 30) = 60 - var(--space-16). Left is
+   nav's own flat 20px inset (Nav.module.css's .nav padding-inline),
+   matching the brand's position exactly instead of the desktop
+   backLink's shifted-right 40px. Above 760px (tablet and desktop), the
+   base rule's bottom:0/left:40px/hover-only underline all stand as-is. */
+@media (max-width: 759px) {
+  .backLink {
+    bottom: auto;
+    top: calc(60px - var(--space-16));
+    left: 20px;
+    /* Tablet/mobile have no hover state to reveal the underline, so it
+       stays visible at all times here instead of only on :hover. */
+    border-bottom-color: currentColor;
+  }
+}
+
 .collectionLabel {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-4);
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.03em;
@@ -44,7 +112,7 @@
 }
 
 .description {
-  max-width: 460px;
+  max-width: 380px;
   font-family: var(--font);
   font-size: var(--text-caption);
   line-height: 1.5;
@@ -82,11 +150,21 @@
   opacity: 0.4;
 }
 
+/* Fulfilment status line — "Available" / "Made to order · <lead time>" /
+   "Sold out" — sits directly above the CTA, same caption-level styling
+   as the rest of the info column's small text (.description). */
+.status {
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: var(--color-maroon);
+}
+
 .addToBag {
   width: 100%;
   max-width: 460px;
   padding: var(--space-3);
-  border: 1px solid var(--color-maroon);
+  border: 2px solid var(--color-maroon);
   background: none;
   font-family: var(--font);
   font-size: var(--text-nav);
@@ -138,16 +216,30 @@
 
 .accordionPanel {
   display: grid;
-  grid-template-rows: 0fr;
+  /* A bare "0fr" leaves the row's own minimum sizing function at its
+     default of "auto", which (independent of accordionInner's own
+     min-height below) falls back to the row's max-content size — the
+     row visually never actually reached zero. Wrapping it in minmax(0,
+     ...) pins that minimum to 0 explicitly, which is the reliable form
+     of this collapse technique. */
+  grid-template-rows: minmax(0, 0fr);
+  overflow: hidden;
   transition: grid-template-rows var(--dur-base) var(--ease-out);
 }
 
 .accordionPanel[data-open="true"] {
-  grid-template-rows: 1fr;
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .accordionInner {
   overflow: hidden;
+  /* Grid items default to min-height: auto, which floors their size at
+     the content's own height no matter how small the parent's
+     grid-template-rows track (0fr, above) is — so the collapsed panel
+     never actually reached zero and its text stayed visible, overlapping
+     the divider below it. This lets it actually shrink to match the
+     track. */
+  min-height: 0;
   font-family: var(--font);
   font-size: var(--text-caption);
   line-height: 1.5;
@@ -158,96 +250,107 @@
 
 .gallery {
   display: flex;
-  flex-wrap: wrap;
+  /* Single row, full browser width — a fixed 20px margin on each side
+     rather than the site's usual responsive --gutter, which would
+     otherwise widen well past that on tablet/desktop. Mobile overrides
+     this to stack instead (see below). */
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: var(--space-2);
-  padding-inline: var(--gutter);
+  /* var(--space-2) (12px), plus a requested 10px. */
+  gap: calc(var(--space-2) + 10px);
+  padding-inline: 20px;
+  /* .product's own flex gap (var(--space-8), 64px) applies uniformly
+     between every section — same negative-margin technique used
+     elsewhere in this file — this pulls the gallery 30px closer to
+     .info above it. */
+  margin-top: -30px;
 }
 
 .galleryFrame {
   position: relative;
-  flex: 1 1 260px;
-  max-width: 400px;
+  /* No max-width cap — the three frames grow to fill the full width
+     (browser width minus the 20px side margins and the two gaps)
+     instead of stopping at a fixed size. */
+  flex: 1 1 0;
   aspect-ratio: 574.207 / 711.666;
-  border: 3px solid var(--color-maroon);
 }
 
-.artistNote {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
+/* Mobile: stack instead of squeezing all three into one row. Placed
+   after the unconditional .gallery/.galleryFrame rules above (not
+   alongside them) — two same-specificity rules setting the same
+   property resolve by source order, so an earlier mobile override gets
+   silently beaten by a later unconditional rule. */
+@media (max-width: 767px) {
+  .gallery {
+    flex-wrap: wrap;
+  }
+
+  .galleryFrame {
+    flex: 1 1 100%;
+  }
+}
+
+/* Matches the Collection page's module 4 exactly (small crop above,
+   full-length look below), just without its "+" shop-this-look button —
+   see the JSX comment. Collection's version relies on its shared
+   .editorial wrapper for the side margin, applied OUTSIDE the max-width-
+   constrained block; putting that same padding directly on .stackModule
+   instead (inside its own 459px cap) ate into the 459/222 px values
+   themselves at desktop's 139px gutter, leaving only ~181px of content
+   width either way — which is why the tall image stopped reading as
+   bigger than the small one. Splitting it into an outer wrap (padding
+   only) and this inner block (sizing only) keeps the two concerns
+   separate, like Collection's own editorial-wrapper + moduleStack split. */
+.stackWrap {
   padding-block: var(--space-8);
   padding-inline: var(--gutter);
 }
 
-.artistImage {
+.stackModule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 459px;
+  margin-inline: auto;
+}
+
+.stackSmall {
   position: relative;
   width: 100%;
-  max-width: 404px;
-  aspect-ratio: 403.797 / 529.114;
+  max-width: 222px;
+  aspect-ratio: 222.68 / 275.987;
 }
 
-.artistTint {
-  position: absolute;
-  inset: 0;
-  background: rgba(207, 188, 173, 0.4);
-  mix-blend-mode: multiply;
-}
-
-.artistCaption {
-  max-width: 650px;
-  font-family: var(--font);
-  font-size: var(--text-caption);
-  line-height: 1.5;
-  color: var(--color-maroon);
-  text-align: center;
-}
-
-.relatedStrip {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-4);
-  padding-inline: var(--gutter);
-  overflow-x: auto;
-}
-
-.relatedFrame {
+.stackTall {
   position: relative;
-  display: block;
-  flex-shrink: 0;
-  width: 200px;
-  aspect-ratio: 200 / 249.376;
-  border: 2px solid var(--color-maroon);
-  transition: opacity var(--dur-fast) var(--ease-out);
+  width: 100%;
+  aspect-ratio: 459.288 / 569.237;
 }
 
-.relatedFrame:hover {
-  opacity: 0.7;
-}
-
-.continueRow {
-  display: flex;
-  justify-content: flex-end;
-  padding-inline: var(--gutter);
-  padding-block: var(--space-4) var(--space-10);
+.stackCaption {
+  align-self: flex-start;
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.02em;
+  line-height: 1.5;
   color: var(--color-maroon);
 }
 
-.continueRow a {
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
+/* Mobile override matching the Collection page's own module 4 exactly —
+   the small crop shrinks to 178px while the tall/full-length image (no
+   cap of its own — it just fills .stackModule) is bumped back up to
+   440px, keeping it clearly the bigger of the two rather than both
+   converging toward the same width. Placed after the base rules above so
+   it isn't silently beaten by them on source order. */
+@media (max-width: 767px) {
+  .stackSmall {
+    max-width: 178px;
+  }
 
-.continueRow a:hover {
-  opacity: 0.5;
-}
-
-@media (min-width: 1024px) {
-  .gallery {
-    flex-wrap: nowrap;
+  .stackModule {
+    max-width: 440px;
   }
 }
+

@@ -3,7 +3,6 @@
   display: flex;
   align-items: flex-start;
   overflow: hidden;
-  height: 840px;
   background: var(--color-pink);
   border-block: 2px solid var(--color-maroon);
   padding: 30px;
@@ -17,9 +16,20 @@
   display: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
+/* The 840px canvas is only needed to give the cursor-trail images room
+   to roam. Tied to the same 750px breakpoint as .lists' row layout above
+   (not hover/pointer capability) so the two switch together — below
+   750px the section wraps its actual stacked content instead of
+   reserving hundreds of px of empty space for an effect that has no
+   room to run there. */
+
+@media (min-width: 750px) {
   .trail {
     display: block;
+  }
+
+  .press {
+    height: 840px;
   }
 }
 
@@ -60,6 +70,50 @@
   color: var(--color-maroon);
 }
 
+.wornBy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Below-750px fallback for .trail above — same images, but as a
+   user-scrollable row instead of following the cursor. Shown by
+   default; hidden at 750px and up, where .trail takes over instead —
+   the exact opposite of .trail's own media query, so only one ever
+   renders. */
+.scrollStrip {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Cancels .press's own 30px side padding so the images bleed all the
+     way to the true browser edge instead of sitting inset with the rest
+     of the section's text content. Harmless on hover-capable devices,
+     where this element is hidden entirely below. */
+  margin-inline: -30px;
+  /* 50px - 10px. */
+  margin-bottom: 40px;
+}
+
+.scrollStrip::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollFrame {
+  position: relative;
+  flex-shrink: 0;
+  /* 140px, 20% bigger. */
+  width: 168px;
+  aspect-ratio: 3 / 3.5;
+}
+
+@media (min-width: 750px) {
+  .scrollStrip {
+    display: none;
+  }
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -67,25 +121,66 @@
   list-style: none;
 }
 
+/* Each press mention now links out to that publication's own site.
+   Always-underlined by default (the safe state for touch, which has no
+   hover to reveal it with) — hidden until hover on devices with a real
+   pointer, matching the same pattern used for the Collection page's
+   "Shop the look" hints and the Stockists/Collection Archive links. */
+.pressLink {
+  border-bottom: 0.5px solid currentColor;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pressLink {
+    border-bottom-color: transparent;
+    transition: border-bottom-color var(--dur-fast) var(--ease-out);
+  }
+
+  .pressLink:hover {
+    border-bottom-color: currentColor;
+  }
+}
+
 .pressGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  /* 12px -> 20px, mobile only in effect — desktop already overrides this
+     with its own explicit gap below. */
+  gap: 20px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 750px) {
   .lists {
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
   }
 
-  .lists > .label {
+  /* "Worn by" is now wrapped in .wornBy (alongside the mobile scroll
+     strip), not a direct child of .lists — target the wrapper instead
+     so its 50%-width sizing on desktop still holds. */
+  .lists > .wornBy {
     flex: 0 0 50%;
   }
 
   .pressGroup {
     flex-direction: row;
     gap: var(--space-12);
+  }
+}
+
+@media (max-width: 749px) {
+  /* .lists' own gap (var(--space-6), 48px) would otherwise still add its
+     own space between .wornBy and .pressGroup on top of .scrollStrip's
+     own margin-bottom above — zeroing it here hands control of that gap
+     entirely to the images' own margin, matching what was asked for
+     ("Xpx below the image row") rather than stacking on top of 48. */
+  .lists {
+    gap: 0;
+  }
+
+  .press {
+    /* 90px + 10px. */
+    padding-bottom: 100px;
   }
 }

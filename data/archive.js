@@ -4,7 +4,7 @@ export const collections = [
     name: "Collection I",
     season: "SS27",
     artist: "Richard Kilroy",
-    url: "/collection",
+    url: "/collection/i-richard-kilroy",
     previewImage: "/3b9ae38a0e5c8b7747e8e233b4d1a8b600f41750.png",
   },
   {
@@ -13,7 +13,7 @@ export const collections = [
     season: "FW27",
     artist: "Jessica Rose Bird",
     url: "#",
-    previewImage: "/810e6f402ef0c401acd416ccd3810a0131ec8715.png",
+    previewImage: "/image 120.jpg",
   },
   {
     id: 3,
@@ -21,7 +21,7 @@ export const collections = [
     season: "SS28",
     artist: "John Booth",
     url: "#",
-    previewImage: "/d16b2a8a716f1aff81a776102cfaea579e6e609a.png",
+    previewImage: "/image 121.jpg",
   },
   {
     id: 4,
@@ -29,7 +29,7 @@ export const collections = [
     season: "FW28",
     artist: "Colm Mac Athlaoich",
     url: "#",
-    previewImage: "/28bc13f77ef92fd92935737a84e7fa06112f708e.png",
+    previewImage: "/image 122.jpg",
   },
   {
     id: 5,
@@ -37,6 +37,6 @@ export const collections = [
     season: "SS29",
     artist: "Faye Wei Wei",
     url: "#",
-    previewImage: "/76120a8e5ea863917d96656cbe20ee24b45b6a87.png",
+    previewImage: "/image 123.jpg",
   },
 ];

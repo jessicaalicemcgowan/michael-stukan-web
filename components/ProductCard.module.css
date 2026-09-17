@@ -16,16 +16,18 @@
   width: 100%;
   aspect-ratio: 200 / 249.376;
   border: 2px solid var(--color-maroon);
-  overflow: hidden;
+  /* Extra 2px ring sits just outside the real border via box-shadow (no
+     layout shift) to make the stroke read as 2px thicker on hover. */
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
 }
 
 .image {
   object-fit: cover;
-  transition: transform 600ms var(--ease-out);
 }
 
-.card:hover .image {
-  transform: scale(1.03);
+.card:hover .frame {
+  box-shadow: 0 0 0 1px var(--color-maroon);
 }
 
 .meta {
@@ -34,6 +36,12 @@
   justify-content: space-between;
   font-family: var(--font);
   color: var(--color-maroon);
+}
+
+.addColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .add {
@@ -50,6 +58,48 @@
 
 .add:disabled {
   cursor: not-allowed;
+}
+
+/* Sizes reveal neatly below the + using the same 0fr/1fr grid-row
+   collapse as the PDP's own accordion — minmax(0, ...) pins the track's
+   own minimum to 0 (a bare 0fr/1fr leaves it at "auto", which floors the
+   row at its content size and stops it from actually collapsing) and
+   overflow: hidden keeps the row itself clipped either way. */
+.sizePanel {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  overflow: hidden;
+  width: 100%;
+  transition: grid-template-rows var(--dur-slow) var(--ease-out);
+}
+
+.sizePanel[data-open="true"] {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sizePanelInner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+}
+
+.sizeOption {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  color: inherit;
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.sizeOption:hover {
+  border-bottom-color: currentColor;
 }
 
 .price {

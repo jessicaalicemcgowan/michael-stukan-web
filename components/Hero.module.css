@@ -3,18 +3,23 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 60px;
   height: 100svh;
   background: var(--color-pink);
   overflow: hidden;
 }
 
 .heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 50% 20%;
   z-index: -1;
   opacity: 0;
-  transition: opacity 1.2s var(--ease-soft);
+  transition: opacity 3s var(--ease-soft);
 }
 
 .heroImage[data-visible="true"] {
@@ -24,8 +29,20 @@
 .logotypeWrap {
   position: relative;
   z-index: 1;
-  align-self: stretch;
-  aspect-ratio: 738.863 / 897.738;
+  width: min(100%, calc(100svh * 759 / 876));
+  aspect-ratio: 759 / 876;
+  height: auto;
+}
+
+@media (max-width: 767px) {
+  .hero {
+    padding-left: 10px;
+    justify-content: center;
+  }
+
+  .logotypeWrap {
+    width: 100%;
+  }
 }
 
 .logotype {
@@ -34,7 +51,7 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 2.5s var(--ease-soft);
+  transition: opacity 5s var(--ease-soft);
 }
 
 .logotype[data-visible="true"] {
@@ -42,14 +59,11 @@
 }
 
 .hero[data-revealed="true"] .logotype {
-  transition: opacity 1.2s var(--ease-soft);
-}
-
-.logotypeWhite {
-  filter: brightness(0) invert(1);
+  transition: opacity 3s var(--ease-soft);
 }
 
 .arrow {
+  display: none;
   position: absolute;
   left: 50%;
   bottom: var(--space-8);
@@ -60,10 +74,10 @@
   padding: 0;
   background: none;
   border: none;
-  color: var(--color-white);
+  color: var(--color-maroon);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.6s var(--ease-soft);
+  transition: opacity 1.5s var(--ease-soft);
 }
 
 .arrow[data-visible="true"] {
@@ -78,7 +92,7 @@
 
 .arrow[data-visible="true"]:hover {
   transform: translateX(-50%) translateY(4px);
-  transition: opacity 0.6s var(--ease-soft), transform var(--dur-fast) var(--ease-out);
+  transition: opacity 1.5s var(--ease-soft), transform var(--dur-fast) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,12 +103,12 @@
   }
 
   .heroImage,
-  .logotypeWhite,
+  .logotypeReveal,
   .arrow {
     opacity: 1;
   }
 
-  .logotype:not(.logotypeWhite) {
+  .logotype:not(.logotypeReveal) {
     opacity: 0;
   }
 }

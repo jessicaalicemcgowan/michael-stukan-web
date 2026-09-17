@@ -13,12 +13,9 @@ export default function FadeUp({ children, as: Tag = "div", className = "", dela
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(node);
-        }
+        setVisible(entry.isIntersecting);
       },
-      { threshold: 0.1, rootMargin: "0px 0px 200px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
 
     observer.observe(node);

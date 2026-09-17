@@ -26,7 +26,8 @@
   gap: var(--space-4);
   padding: var(--space-3);
   background: var(--color-blue);
-  color: var(--color-maroon);
+  border-left: 2px solid var(--color-maroon-on-blue);
+  color: var(--color-maroon-on-blue);
   transform: translateX(100%);
   transition: transform var(--dur-base) var(--ease-out);
   overflow-y: auto;
@@ -80,8 +81,16 @@
 .close {
   font-size: var(--text-caption);
   letter-spacing: 0.02em;
-  text-decoration: underline;
   opacity: 0.6;
+}
+
+.closeText {
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.close:hover .closeText {
+  border-bottom-color: currentColor;
 }
 
 .items {
@@ -94,7 +103,7 @@
 .empty {
   font-family: var(--font);
   font-size: var(--text-body);
-  color: var(--color-maroon);
+  color: var(--color-maroon-on-blue);
 }
 
 .item {
@@ -107,7 +116,7 @@
   flex-shrink: 0;
   width: 120px;
   aspect-ratio: 170 / 210.696;
-  border: 2px solid var(--color-maroon);
+  border: 2px solid var(--color-maroon-on-blue);
 }
 
 .image {
@@ -163,7 +172,7 @@
   justify-content: space-between;
   gap: var(--space-2);
   padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--color-maroon);
+  border-bottom: 2px solid var(--color-maroon-on-blue);
 }
 
 .discountInput {
@@ -179,7 +188,7 @@
 }
 
 .discountInput::placeholder {
-  color: var(--color-maroon);
+  color: var(--color-maroon-on-blue);
   opacity: 0.6;
 }
 
@@ -217,7 +226,7 @@
 .checkout {
   width: 100%;
   padding: var(--space-3);
-  background: var(--color-maroon);
+  background: var(--color-maroon-on-blue);
   color: var(--color-bg);
   border: none;
   font-family: var(--font);
@@ -236,5 +245,5 @@
   font-family: var(--font);
   font-size: 9px;
   letter-spacing: 0.02em;
-  color: var(--color-maroon);
+  color: var(--color-maroon-on-blue);
 }

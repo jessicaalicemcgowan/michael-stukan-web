@@ -1,13 +1,24 @@
 .fadeUp {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity var(--dur-slowest) var(--ease-soft), transform var(--dur-slowest) var(--ease-soft);
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
   will-change: opacity, transform;
 }
 
 .fadeUp[data-visible="true"] {
   opacity: 1;
-  transform: translateY(0);
+  /* none, not translateY(0) — both resolve to the same position, but
+     translateY(0) is still a transform, which (combined with will-change
+     above) keeps the element on its own GPU-composited layer permanently.
+     That layer's edges can snap to a slightly different sub-pixel grid
+     than the surrounding page, leaving a hairline gap where a section
+     meets its neighbour (e.g. the last FadeUp section on the maroon
+     About page against the footer right after it) — invisible against
+     the site's default beige background, but visible as a thin beige
+     line wherever a FadeUp section sits on a different colour. none
+     drops the element off its own layer once settled, closing the gap;
+     transitioning to/from "none" animates correctly either way. */
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

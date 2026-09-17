@@ -10,7 +10,6 @@ import styles from "./CollectionArchive.module.css";
 export default function CollectionArchive() {
   const pathname = usePathname();
   const [hoveredId, setHoveredId] = useState(null);
-  const hovered = collections.find((collection) => collection.id === hoveredId);
 
   return (
     <section className={styles.archive}>
@@ -22,13 +21,12 @@ export default function CollectionArchive() {
           const row = (
             <div className={styles.row}>
               <p className={styles.name}>{collection.name}</p>
-              <p className={styles.season}>{collection.season.toLowerCase()}</p>
               <p className={styles.artist}>{collection.artist}</p>
             </div>
           );
 
           return (
-            <div key={collection.id}>
+            <div key={collection.id} className={styles.item}>
               {isCurrent ? (
                 <div className={styles.current}>{row}</div>
               ) : (
@@ -42,20 +40,25 @@ export default function CollectionArchive() {
                 </Link>
               )}
               <div className={styles.divider} />
+
+              {/* Positioned relative to this row specifically (not the
+                  whole section) so it tracks whichever row is hovered,
+                  instead of staying pinned to one fixed spot. */}
+              <div
+                className={styles.preview}
+                data-visible={collection.id === hoveredId}
+                aria-hidden="true"
+              >
+                <Image
+                  src={collection.previewImage}
+                  alt=""
+                  fill
+                  className={styles.previewImage}
+                />
+              </div>
             </div>
           );
         })}
-      </div>
-
-      <div className={styles.preview} data-visible={Boolean(hovered)} aria-hidden="true">
-        {hovered && (
-          <Image
-            src={hovered.previewImage}
-            alt=""
-            fill
-            className={styles.previewImage}
-          />
-        )}
       </div>
     </section>
   );

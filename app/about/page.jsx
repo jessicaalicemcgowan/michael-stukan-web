@@ -1,14 +1,19 @@
 import Image from "next/image";
 import PressSection from "@/components/PressSection";
 import FadeUp from "@/components/FadeUp";
+import EditorialCarousel from "@/components/EditorialCarousel";
 import styles from "./page.module.css";
 
+// Matches the literal-space run used by the Collection page's editorial
+// captions, to keep the numeral-to-text gap identical.
+const SPACER = "            ";
+
 const stockists = [
-  { city: "London", country: "UK", store: "Liberty London" },
-  { city: "London", country: "UK", store: "Dover Street" },
-  { city: "Berlin", country: "DE", store: "VOO Store" },
-  { city: "Madrid", country: "SP", store: "Ekseption" },
-  { city: "NYC", country: "USA", store: "Assembly" },
+  { city: "London", country: "UK", store: "Liberty London", url: "https://www.libertylondon.com" },
+  { city: "London", country: "UK", store: "Dover Street", url: "https://london.doverstreetmarket.com" },
+  { city: "Berlin", country: "DE", store: "VOO Store", url: "https://voostore.com" },
+  { city: "Madrid", country: "SP", store: "Ekseption", url: "https://www.ekseption.com" },
+  { city: "NYC", country: "USA", store: "Assembly", url: "https://www.assemblynewyork.com" },
 ];
 
 export default function About() {
@@ -62,12 +67,12 @@ export default function About() {
             />
           </div>
           <p className={styles.caption}>
-            + Fittings at the Central Saint Martins studio, spring 2026.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
         </div>
         <div className={styles.pairLarge}>
           <Image
-            src="/923069e93063d2dfd897bb0ca8006c1cdfc7fe4a.png"
+            src="/lookbook-strip-01.png"
             alt="Collection I, studio portrait"
             fill
             className={styles.image}
@@ -105,18 +110,21 @@ export default function About() {
       </FadeUp>
 
       <FadeUp as="section" className={styles.wideModule}>
-        <div className={styles.wideImage}>
-          <Image
-            src="/51ecd9127db5309a6bf137bb8fa1be17641f3e6e.png"
-            alt="Studio process"
-            fill
-            className={styles.image}
-          />
-        </div>
-        <p className={styles.caption}>
-          I / II — Toiles pinned and unpinned, over and over, until the line
-          felt right.
-        </p>
+        <EditorialCarousel
+          images={[
+            {
+              src: "/51ecd9127db5309a6bf137bb8fa1be17641f3e6e.png",
+              alt: "Studio process",
+            },
+            { src: "/lookbook-strip-04.png", alt: "Collection I look" },
+          ]}
+          total="II"
+          captionText="Toiles pinned and unpinned, over and over, until the line felt right."
+          spacer={SPACER}
+          frameClassName={styles.wideImage}
+          captionClassName={styles.caption}
+          imageClassName={styles.image}
+        />
       </FadeUp>
 
       <FadeUp>
@@ -129,14 +137,24 @@ export default function About() {
           <div className={styles.divider} />
           {stockists.map((stockist) => (
             <div key={`${stockist.city}-${stockist.store}`}>
-              <div className={styles.stockistRow}>
-                <p className={styles.stockistCity}>{stockist.city.toLowerCase()}</p>
-                <p className={styles.stockistCountry}>{stockist.country.toLowerCase()}</p>
-                <p className={styles.stockistStore}>{stockist.store.toLowerCase()}</p>
-                <p className={styles.stockistArrow} aria-hidden="true">
-                  ›
-                </p>
-              </div>
+              {/* External destination (each stockist's own site), not an
+                  internal route — a plain <a>, not next/link, is the right
+                  tool here. */}
+              <a
+                href={stockist.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.stockistLink}
+              >
+                <div className={styles.stockistRow}>
+                  <p className={styles.stockistCity}>{stockist.city.toLowerCase()}</p>
+                  <p className={styles.stockistCountry}>{stockist.country.toLowerCase()}</p>
+                  <p className={styles.stockistStore}>{stockist.store.toLowerCase()}</p>
+                  <p className={styles.stockistArrow} aria-hidden="true">
+                    ›
+                  </p>
+                </div>
+              </a>
               <div className={styles.divider} />
             </div>
           ))}

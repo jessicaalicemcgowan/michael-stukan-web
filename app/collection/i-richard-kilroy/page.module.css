@@ -1,0 +1,792 @@
+.collection {
+  display: flex;
+  flex-direction: column;
+  margin-top: 36px;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.lookbookSection {
+  padding-top: 20px;
+  padding-bottom: 60px;
+}
+
+/* Header */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-10) var(--space-6);
+  padding-inline: var(--gutter);
+  text-align: center;
+}
+
+.headerLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.headerSignature {
+  width: min(70vw, 340px);
+  aspect-ratio: 342.623 / 57.9262;
+  height: auto;
+}
+
+/* About / artist rows */
+
+.artistRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-block: var(--space-6);
+  padding-inline: var(--gutter);
+}
+
+.aboutRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: var(--space-8);
+  padding-inline: var(--gutter);
+}
+
+.artistLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.aboutLabel {
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.aboutBody {
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-maroon);
+}
+
+.artistBody {
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  line-height: 1.4;
+  color: var(--color-maroon);
+}
+
+@media (min-width: 1024px) {
+  .artistRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .aboutRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .artistLabel {
+    width: 220px;
+    text-align: left;
+  }
+
+  .aboutLabel {
+    width: 260px;
+    text-align: left;
+  }
+
+  .aboutBody {
+    max-width: 690px;
+  }
+
+  .artistBody {
+    max-width: 700px;
+  }
+}
+
+/* Editorial modules */
+
+.editorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  width: 100%;
+  /* Matches .aboutRow's convention — without a cap, the space-between
+     rows inside (module 1, 3, 5) stretched their two images all the way
+     to the raw viewport edges on wide screens instead of staying
+     centered within a reasonably-sized, browser-centered column. */
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: 30px 120px;
+  padding-inline: 30px;
+}
+
+@media (min-width: 768px) {
+  .editorial {
+    padding-block: 64px 120px;
+    padding-inline: 40px;
+  }
+}
+
+/* Module 10's caption is centered (.portraitCaptionWide) inside a wider
+   container than the other captions, which let the browser occasionally
+   break the line inside the SPACER run itself, shrinking the visible
+   +-to-text gap. Keeping the spacer as one unbreakable unit guarantees it
+   always renders at full width, matching every other caption's gap. */
+.spacerNoWrap {
+  white-space: nowrap;
+}
+
+.caption {
+  max-width: 320px;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  color: var(--color-maroon);
+  /* Preserves the SPACER run of literal spaces used to match the
+     lookbook strip's label-to-text gap. */
+  white-space: pre-wrap;
+}
+
+/* Shop-hover hint — "Shop the look" (or "Watch", module 9's video) shown
+   below a caption. Matches components/LookbookStrip.module.css's own
+   .shopHint exactly; see the .shopHover rules further down for how it's
+   revealed together with each module's image border. */
+.shopHint {
+  display: inline-block;
+  width: fit-content;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+  /* Now a <button> (clickable, same handler as the image/+) rather than
+     plain text — reset default button chrome, then reapply just the
+     underline via border-bottom as before. */
+  background: none;
+  border: none;
+  border-bottom: 0.5px solid currentColor;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.moduleA {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.moduleAText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 404px;
+}
+
+.moduleAImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 403.797 / 323.038;
+}
+
+.moduleATallWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 506px;
+}
+
+.moduleATall {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2500 / 3125;
+}
+
+.moduleWide {
+  display: flex;
+  flex-direction: column;
+  /* Left-aligns the caption to the image's left edge — this wrapper is
+     capped at the image's own max-width and centered on the page, so a
+     flex-start child (the narrower caption) lines up with the image
+     instead of centering under it. */
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 692px;
+  margin-inline: auto;
+}
+
+.moduleWideImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 692.502 / 461.724;
+}
+
+/* Crops module 7's portrait source (blazer + pleated skirt, full body)
+   down to the skirt/hands/boots into the module's landscape frame. */
+.cropSkirt {
+  object-position: center 62%;
+}
+
+.moduleOffset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.moduleOffsetLarge {
+  position: relative;
+  width: 100%;
+  max-width: 578px;
+  aspect-ratio: 578.833 / 723.542;
+}
+
+.moduleOffsetSmall {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  /* 1.5x the original 222px */
+  max-width: 333px;
+}
+
+.moduleOffsetSmallImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 222.68 / 275.987;
+}
+
+.moduleStack {
+  display: flex;
+  flex-direction: column;
+  /* Images center within the column; the caption overrides this itself
+     (see .stackCaption) so it stays left-aligned to the tall image. */
+  align-items: center;
+  /* Doubled from var(--space-2) per feedback, at all browser sizes. */
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 459px;
+  margin-inline: auto;
+}
+
+.stackCaption {
+  align-self: flex-start;
+  /* .moduleStack's flex gap (var(--space-3), 24px) is shared by every
+     child in the stack — the two images and this caption. Pulling the
+     caption up by var(--space-2) (12px) halves just the image-to-caption
+     gap (24px -> 12px) without touching the small/tall image gap above
+     it or the shopHint gap below, which stay at the full 24px. */
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.moduleStackSmall {
+  position: relative;
+  width: 100%;
+  max-width: 222px;
+  aspect-ratio: 222.68 / 275.987;
+}
+
+.moduleStackTall {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 459.288 / 569.237;
+}
+
+.moduleReverse {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.moduleReverseSmall {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  /* 1.5x the original 222px */
+  max-width: 333px;
+}
+
+.moduleReverseSmallImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 222.68 / 275.987;
+}
+
+.moduleReverseLarge {
+  position: relative;
+  width: 100%;
+  max-width: 532px;
+  aspect-ratio: 532.229 / 697.405;
+}
+
+.moduleReverseTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(207, 188, 173, 0.4);
+  mix-blend-mode: multiply;
+}
+
+@media (min-width: 1024px) {
+  .moduleA,
+  .moduleOffset,
+  .moduleReverse {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+
+/* Mobile-only size reductions live at the very end of this file (see
+   "MOBILE EDITORIAL OVERRIDES" below) — they must come after every
+   module's own base rule, since equal-specificity single-class selectors
+   are resolved by source order, not just by media-query presence. */
+
+/* Shared button resets so an image or a caption's leading "+"/numeral can
+   be a click target without picking up default button chrome. */
+.imgButton {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.plusButton {
+  display: inline;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Bumps the leading "+" 4pt above the caption's own type size, baseline
+   aligned with the rest of the line (default inline baseline — no extra
+   vertical-align needed). Site-wide for caption "+"s; product-grid "+"
+   buttons (ProductCard, LookDrawer) are untouched since they don't use
+   this class. */
+.plusLabel {
+  font-size: calc(var(--text-caption) + 4pt);
+}
+
+/* Video module (module 6 — small centered video, no caption) */
+
+.moduleVideo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.moduleVideoFrame {
+  position: relative;
+  width: 100%;
+  /* Figma's slot is 327.57 wide x 405.987 tall — a vertical crop, not the
+     horizontal one this used to have (width/height were swapped). */
+  max-width: 328px;
+  aspect-ratio: 327.57 / 405.987;
+}
+
+.moduleVideoFrame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Split module (module 9): large image + captioned video */
+
+.moduleSplit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+}
+
+.moduleSplitVideoWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  /* 404px -> 80% (323px) -> 1.2x that (388px). */
+  max-width: 388px;
+}
+
+.moduleSplitVideoFrame {
+  cursor: pointer;
+}
+
+.moduleSplitVideoFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 403.797 / 289.543;
+}
+
+.moduleSplitVideoFrame video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+  .moduleSplit {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+/* Portrait module (modules 8 & 10): single tall image, centered, optional
+   tint (module 8 only) and optional caption below (module 10 only). */
+
+.modulePortrait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 551px;
+  margin-inline: auto;
+}
+
+.modulePortraitImage {
+  position: relative;
+  width: 100%;
+  max-width: 459px;
+  aspect-ratio: 459.288 / 569.237;
+}
+
+.modulePortraitTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(62, 57, 43, 0.08);
+}
+
+/* Module 10 only — wider, centered caption matching Figma (module 8 has no
+   caption, so it's unaffected). Centering comes from .modulePortrait's own
+   align-items: center; this just widens the cap beyond the shared
+   .caption's 320px so it wraps the same way the image itself does. */
+.portraitCaptionWide {
+  max-width: 459px;
+  text-align: center;
+}
+
+/* Stand-in for the one module still waiting on a Figma export */
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--color-border);
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.moduleWideImage .placeholder {
+  position: absolute;
+  inset: 0;
+}
+
+/* Campaign */
+
+.campaign {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-block: var(--space-4) var(--space-10);
+  padding-inline: 29px;
+}
+
+@media (min-width: 768px) {
+  .campaign {
+    padding-inline: 58px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .campaign {
+    padding-inline: 200px;
+  }
+}
+
+.campaignHeading {
+  display: flex;
+  align-items: center;
+  /* Matches the homepage's own .campaignHeading — no left-hand label here
+     anymore, so flex-end keeps the link pinned to the right edge instead
+     of collapsing to flex-start with nothing to space against. */
+  justify-content: flex-end;
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.campaignLink {
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.campaignLink:hover {
+  border-bottom-color: currentColor;
+}
+
+.campaignImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 926 / 563;
+}
+
+.campaignVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Final CTA + strip now lives in components/ShopCollectionStrip. */
+
+/* Shop hover reveal — applied via the .shopHover marker class added only to
+   the wrapper of each interactive "+/slider" module on this page (modules
+   2, 3, 4, 9, 10). Mirrors components/LookbookStrip.module.css's pattern
+   exactly: the image gets an always-visible border by default (safe for
+   touch devices, which have no hover to reveal it with), and the border
+   plus the "Shop the look"/"Watch" hint reveal together only on
+   hover-capable devices, driven by the same .shopHover:hover/:focus-within
+   so the two can't get out of sync.
+
+   Five different image classes are listed because each module uses its own
+   element (.moduleWideImage, .moduleOffsetSmallImage, .moduleStackTall,
+   .modulePortraitImage, .moduleSplitVideoFrame). Several of these classes
+   are shared with OTHER, non-interactive modules on this same page
+   (.moduleWide/.moduleWideImage with module 7; .modulePortrait/
+   .modulePortraitImage with module 8) — scoping every rule as a descendant
+   of .shopHover, rather than styling the shared class names directly, is
+   what keeps this from leaking onto those unrelated modules. */
+.shopHover .moduleWideImage,
+.shopHover .moduleOffsetSmallImage,
+.shopHover .moduleStackTall,
+.shopHover .modulePortraitImage,
+.shopHover .moduleSplitVideoFrame {
+  border: 2px solid var(--color-maroon);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shopHover .moduleWideImage,
+  .shopHover .moduleOffsetSmallImage,
+  .shopHover .moduleStackTall,
+  .shopHover .modulePortraitImage,
+  .shopHover .moduleSplitVideoFrame {
+    border-color: transparent;
+  }
+
+  .shopHover .shopHint {
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .shopHover:hover .moduleWideImage,
+  .shopHover:hover .moduleOffsetSmallImage,
+  .shopHover:hover .moduleStackTall,
+  .shopHover:hover .modulePortraitImage,
+  .shopHover:hover .moduleSplitVideoFrame,
+  .shopHover:focus-within .moduleWideImage,
+  .shopHover:focus-within .moduleOffsetSmallImage,
+  .shopHover:focus-within .moduleStackTall,
+  .shopHover:focus-within .modulePortraitImage,
+  .shopHover:focus-within .moduleSplitVideoFrame {
+    border-color: var(--color-maroon);
+  }
+
+  .shopHover:hover .shopHint,
+  .shopHover:focus-within .shopHint {
+    opacity: 1;
+  }
+}
+
+/* ===================== MOBILE EDITORIAL OVERRIDES ===================== */
+/* Mobile-only size reductions across the editorial modules. Each value is
+   a fixed px cap — 80% (or 70%, for module 3's small offset image and
+   module 9's video) of that element's own original max-width — rather
+   than a relative width. A relative width on a container that already has
+   its own max-width silently does nothing once the container's resolved
+   percentage is wider than that cap (which is exactly the case for most
+   of these around typical mobile widths), so it never reliably shrunk
+   anything; a fixed px cap always applies regardless of viewport width.
+   Modules 1, 3, and 5 additionally split their stacked pair to opposite
+   edges (top image left, bottom image right); module 5 also drops its
+   column-reverse so the scarf renders on top instead of the illustration.
+   Module 3 uses its own .module3Large modifier (alongside the shared
+   .moduleOffsetLarge) so its left-alignment doesn't leak into module 9,
+   which reuses .moduleOffsetLarge for an unrelated image and stays
+   centered. Module 2 stays centered here too, overriding its desktop
+   left-alignment above; module 7 was already centered by default.
+
+   This block is deliberately placed at the very end of the file: several
+   of the classes it overrides (modulePortrait, moduleSplit, moduleVideo,
+   etc.) have their own unguarded base rule declared further down in the
+   file than where this media query used to sit. Since two equal-
+   specificity single-class selectors are resolved by source order — not
+   by which one is wrapped in a media query — a later unguarded base rule
+   silently wins over an earlier mobile override once the same property is
+   set on both. Keeping this block last guarantees it always wins. */
+@media (max-width: 767px) {
+  /* Module 1 — 404px/506px -> 80%; top image further reduced to 90% of
+     that (323px -> 291px) and kept centered rather than left-aligned. */
+  .moduleAText {
+    max-width: 291px;
+    align-self: center;
+  }
+
+  .moduleATallWrap {
+    max-width: 405px;
+    align-self: flex-end;
+  }
+
+  /* Modules 2 & 7 (shared .moduleWide) — 692px -> 80% */
+  .moduleWide {
+    max-width: 554px;
+  }
+
+  /* Module 3 — 578px/333px -> 80%/70%; .moduleOffsetLarge's shrink is
+     shared with module 9, the left-alignment is not. */
+  .moduleOffsetLarge {
+    max-width: 462px;
+  }
+
+  .module3Large {
+    align-self: flex-start;
+  }
+
+  .moduleOffsetSmall {
+    max-width: 233px;
+    align-self: flex-end;
+  }
+
+  /* Module 4 — 222px/459px -> 80% (moduleStackTall has no cap of its own;
+     it fills .moduleStack, so shrinking the parent shrinks it too). Tall
+     image bumped back up 20% (367px -> 440px) per follow-up feedback. */
+  .moduleStackSmall {
+    max-width: 178px;
+  }
+
+  .moduleStack {
+    max-width: 440px;
+  }
+
+  /* Module 5 — 333px/532px -> 80%, order swapped so the scarf leads */
+  .moduleReverse {
+    flex-direction: column;
+  }
+
+  .moduleReverseSmall {
+    max-width: 266px;
+    align-self: flex-start;
+  }
+
+  .moduleReverseLarge {
+    max-width: 426px;
+    align-self: flex-end;
+  }
+
+  /* Module 6 — 328px -> 80% */
+  .moduleVideoFrame {
+    max-width: 262px;
+  }
+
+  /* Modules 8 & 10 (shared .modulePortraitImage) — 459px -> 80%; sizes
+     the image only, so module 10's wider caption cap is untouched. */
+  .modulePortraitImage {
+    max-width: 367px;
+  }
+
+  /* Module 10 only — its own image is narrowed further to match Module
+     5's scarf carousel width (266px), via its own modifier rather than
+     editing the shared .modulePortraitImage, so module 8 stays untouched.
+     Stays centered (.modulePortrait's own align-items: center) per
+     feedback — no align-self override here. */
+  .module10PortraitImage {
+    max-width: 266px;
+  }
+
+  /* Module 9's video: no mobile-specific reduction — stays at its base
+     388px cap on every screen size, per explicit feedback that its size
+     shouldn't change on mobile. (A stale, now-removed 70% reduction here
+     had been silently inert due to the cascade-order bug above; fixing
+     that bug made it suddenly visible, which read as an unrequested
+     change — hence removing it outright rather than re-hiding it.) */
+
+  /* Module 9's large image only — confirmed via devtools to be the
+     full-body look photo, not module 3's (which keeps the shared
+     .moduleOffsetLarge's 462px/80% fixed cap above). A fixed px max-width
+     is the wrong tool here: at genuinely narrow phone widths the
+     container's own resolved width (100% of a ~250-350px column) is
+     already below that cap, so the "reduction" never had anything to
+     bite into. A true relative width scales at any mobile width. Also
+     left-aligns to match the video wrap below it, which fills its own
+     container edge-to-edge. */
+  .module9Large {
+    width: 80%;
+    max-width: none;
+    align-self: flex-start;
+  }
+}

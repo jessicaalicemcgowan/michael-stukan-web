@@ -1,6 +1,24 @@
 .about {
   display: flex;
   flex-direction: column;
+  /* padding-top, not margin-top: margin leaves a gap ABOVE the
+     element's own box that its background doesn't cover, so the
+     transparent-ish nav sitting over that gap showed the page's
+     default (beige) background through it instead of maroon. Padding
+     keeps that space inside the box, so the maroon background now
+     extends all the way behind the nav. Matches the mobile nav's own
+     (taller, 56px) height — desktop's is 36px, hence the override
+     below. */
+  padding-top: 56px;
+  /* PressSection has its own opaque pink background and untouched
+     maroon text, so it reads unchanged sitting on top of this. */
+  background: var(--color-maroon);
+}
+
+@media (min-width: 768px) {
+  .about {
+    padding-top: 36px;
+  }
 }
 
 .image {
@@ -12,7 +30,11 @@
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.02em;
-  color: var(--color-maroon);
+  line-height: 1.3;
+  color: var(--color-bg-about);
+  /* Preserves the SPACER run of literal spaces used to match the
+     numeral-to-text gap (mirrors the Collection page's caption pattern). */
+  white-space: pre-wrap;
 }
 
 /* Intro */
@@ -33,7 +55,7 @@
   font-size: var(--text-heading);
   line-height: 1.4;
   letter-spacing: 0.02em;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
 }
 
 .introImage {
@@ -58,7 +80,7 @@
   font-size: var(--text-nav);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
   flex-shrink: 0;
   text-align: center;
 }
@@ -70,7 +92,7 @@
   font-family: var(--font);
   font-size: var(--text-body);
   line-height: 1.5;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
 }
 
 @media (min-width: 1024px) {
@@ -168,7 +190,7 @@
   font-family: var(--font);
   font-size: var(--text-body);
   line-height: 1.6;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
 }
 
 @media (min-width: 1024px) {
@@ -188,8 +210,16 @@
 .wideModule {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* Left-aligns the caption to the image's left edge, matching the
+     Collection page's equivalent module (module 7, shared .moduleWide) —
+     the block itself is capped and centered on the page below, so a
+     flex-start child lines up with the image instead of centering under
+     it. */
+  align-items: flex-start;
   gap: var(--space-2);
+  width: 100%;
+  max-width: 692px;
+  margin-inline: auto;
   padding-block: var(--space-4) var(--space-10);
   padding-inline: var(--gutter);
 }
@@ -211,12 +241,35 @@
   padding-inline: var(--gutter);
 }
 
+@media (min-width: 1024px) {
+  .stockists {
+    flex-direction: row;
+    align-items: flex-start;
+    /* space-between, not the default packing — matches .aboutRow/
+       .collabRow/.bioRow's own convention, and keeps the list pinned to
+       the container's far right edge (its original horizontal position)
+       instead of collapsing to sit right after the label. */
+    justify-content: space-between;
+  }
+}
+
 .stockistsLabel {
   font-family: var(--font);
   font-size: var(--text-nav);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
+}
+
+@media (min-width: 1024px) {
+  .stockistsLabel {
+    /* Top-aligns the label with the "london" row's own text rather than
+       .stockistsList's top edge — that edge is the leading divider (1px),
+       and each row's own padding-block (var(--space-2), 12px) sits
+       between the divider and its text, so the label needs to clear both
+       to land on the same line as the first row. */
+    padding-top: 18px;
+  }
 }
 
 .stockistsList {
@@ -227,9 +280,32 @@
   align-self: flex-end;
 }
 
+@media (min-width: 1024px) {
+  .stockistsList {
+    align-self: auto;
+    flex: none;
+  }
+}
+
 .divider {
   height: 1px;
   background: var(--color-border);
+  opacity: 0.5;
+}
+
+/* Each row is now a link out to that stockist's own site — reset the
+   default <a> styling and reuse the same hover underline pattern as
+   CollectionArchive's own .link. */
+.stockistLink {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.stockistLink:hover {
+  border-bottom-color: currentColor;
 }
 
 .stockistRow {
@@ -240,7 +316,7 @@
   font-family: var(--font);
   font-size: var(--text-body);
   letter-spacing: 0.03em;
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
 }
 
 .stockistCity {
@@ -249,6 +325,7 @@
 
 .stockistCountry {
   width: 40px;
+  margin-left: -10px;
 }
 
 .stockistStore {
@@ -256,6 +333,6 @@
 }
 
 .stockistArrow {
-  color: var(--color-maroon);
+  color: var(--color-bg-about);
   opacity: 0.4;
 }

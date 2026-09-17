@@ -15,12 +15,12 @@ const cursorImages = [
 ];
 
 const press = [
-  "British Vogue",
-  "Vogue USA",
-  "T Style Magazine",
-  "Harper's Bazaar",
-  "Purple",
-  "W Magazine",
+  { name: "British Vogue", url: "https://www.vogue.co.uk" },
+  { name: "Vogue USA", url: "https://www.vogue.com" },
+  { name: "T Style Magazine", url: "https://www.nytimes.com/section/t-magazine" },
+  { name: "Harper's Bazaar", url: "https://www.harpersbazaar.com" },
+  { name: "Purple", url: "https://purple.fr" },
+  { name: "W Magazine", url: "https://www.wmagazine.com" },
 ];
 
 export default function PressSection() {
@@ -47,13 +47,35 @@ export default function PressSection() {
       </div>
 
       <div className={styles.lists}>
-        <p className={styles.label}>Worn by</p>
+        <div className={styles.wornBy}>
+          <p className={styles.label}>Worn by</p>
+          {/* Touch/no-hover fallback for the cursor trail above, which only
+              ever renders on devices with a real mouse (see .trail's own
+              hover-capable media query) — otherwise "Worn by" had no
+              images at all below it. Hidden on hover-capable devices via
+              the matching query in the CSS module, so exactly one of the
+              two ever shows. */}
+          <div className={styles.scrollStrip}>
+            {cursorImages.map((src) => (
+              <div key={src} className={styles.scrollFrame}>
+                <Image src={src} alt="" fill className={styles.image} />
+              </div>
+            ))}
+          </div>
+        </div>
         <div className={styles.pressGroup}>
           <p className={styles.label}>Press</p>
           <ul className={styles.list}>
-            {press.map((name) => (
+            {press.map(({ name, url }) => (
               <li key={name}>
-                {name} <span aria-hidden="true">›</span>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.pressLink}
+                >
+                  {name} <span aria-hidden="true">›</span>
+                </a>
               </li>
             ))}
           </ul>

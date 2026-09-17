@@ -10,8 +10,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-8);
-  padding-block: var(--space-8) var(--space-10);
-  padding-inline: var(--gutter);
+  padding-block: calc(var(--space-8) + 20px) var(--space-10);
 }
 
 .lookbookHeading {
@@ -19,6 +18,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
+  padding-inline: var(--gutter);
 }
 
 .lookbookLabel {
@@ -35,34 +35,111 @@
   height: auto;
 }
 
-.strip {
+.stripWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.stripTrack {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-4);
-  width: 100%;
-  overflow-x: auto;
+  gap: var(--space-6);
+  width: max-content;
+  animation: stripScroll 60s linear infinite;
+  animation-play-state: paused;
+}
+
+.stripTrack[data-playing="true"] {
+  animation-play-state: running;
+}
+
+.stripTrack:has(.stripFrame:hover) {
+  animation-play-state: paused;
+}
+
+@keyframes stripScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .stripFrame {
+  display: block;
   position: relative;
-  width: 220px;
   aspect-ratio: 300 / 374;
   flex-shrink: 0;
 }
 
+.stripFrame:hover {
+  z-index: 1;
+}
+
+.stripFrame:nth-child(3n+1) {
+  width: 300px;
+}
+
+.stripFrame:nth-child(3n+2) {
+  width: 260px;
+}
+
+.stripFrame:nth-child(3n) {
+  width: 220px;
+}
+
+@media (max-width: 767px) {
+  /* 10% smaller than the base sizes, then a further 15% on top of that. */
+  .stripFrame:nth-child(3n+1) {
+    width: 230px;
+  }
+
+  .stripFrame:nth-child(3n+2) {
+    width: 199px;
+  }
+
+  .stripFrame:nth-child(3n) {
+    width: 168px;
+  }
+}
+
+.stripFrame .image {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.stripFrame:hover .image {
+  transform: scale(1.05);
+}
+
 .stripCta {
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  left: 78%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.02em;
   color: var(--color-maroon);
   white-space: nowrap;
-  transition: opacity var(--dur-fast) var(--ease-out);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
 }
 
 .stripCta:hover {
-  opacity: 0.5;
+  border-bottom-color: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stripTrack {
+    animation: none;
+  }
+
+  .stripFrame .image {
+    transition: none;
+  }
 }
 
 .image {
@@ -74,15 +151,31 @@
 .campaign {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
   padding-block: var(--space-4) var(--space-10);
-  padding-inline: var(--gutter);
+  padding-inline: 29px;
+}
+
+@media (min-width: 768px) {
+  .campaign {
+    padding-inline: 58px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .campaign {
+    padding-inline: 200px;
+  }
 }
 
 .campaignHeading {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* Was space-between when this row also held a "SS27" label on the
+     left; that label is gone now, so flex-end keeps the link pinned to
+     the right edge instead of collapsing to flex-start with nothing to
+     space against. */
+  justify-content: flex-end;
   font-family: var(--font);
   font-size: var(--text-nav);
   letter-spacing: 0.08em;
@@ -91,11 +184,12 @@
 }
 
 .campaignLink {
-  transition: opacity var(--dur-fast) var(--ease-out);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
 }
 
 .campaignLink:hover {
-  opacity: 0.5;
+  border-bottom-color: currentColor;
 }
 
 .campaignImage {
@@ -104,26 +198,12 @@
   aspect-ratio: 926 / 563;
 }
 
-/* Shop link */
-
-.shopLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-block: var(--space-6) var(--space-12);
-  padding-inline: var(--gutter);
-}
-
-.shopCta {
-  font-family: var(--font);
-  font-size: var(--text-heading);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.shopCta:hover {
-  opacity: 0.5;
+.campaignVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Editorial */
@@ -133,129 +213,9 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  padding-inline: var(--gutter);
+  padding-block: var(--space-4) var(--space-10);
+  padding-inline: 40px;
 }
 
-.editorialImage {
-  position: relative;
-  width: 100%;
-  max-width: 532px;
-  aspect-ratio: 532 / 697;
-}
+/* Final CTA + strip now lives in components/ShopCollectionStrip. */
 
-.editorialTint {
-  position: absolute;
-  inset: 0;
-  background: rgba(207, 188, 173, 0.4);
-  mix-blend-mode: multiply;
-}
-
-.editorialCaption {
-  width: 100%;
-  max-width: 532px;
-  font-family: var(--font);
-  font-size: var(--text-caption);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-}
-
-/* Final CTA + strip */
-
-.finalCta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  text-align: center;
-  padding-block: var(--space-10) var(--space-6);
-  padding-inline: var(--gutter);
-}
-
-.finalCtaLabel {
-  font-family: var(--font);
-  font-size: var(--text-nav);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-maroon);
-}
-
-.finalCtaLink {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-family: var(--font);
-  font-size: var(--text-heading);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.finalCtaLink:hover {
-  opacity: 0.5;
-}
-
-.finalStrip {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  width: 100%;
-  padding-inline: var(--gutter);
-  padding-bottom: var(--space-8);
-}
-
-.finalStripFrame {
-  position: relative;
-  width: 160px;
-  aspect-ratio: 200 / 249;
-  flex-shrink: 0;
-  border: 2px solid var(--color-maroon);
-  overflow: hidden;
-}
-
-.finalStripCta {
-  font-family: var(--font);
-  font-size: var(--text-caption);
-  letter-spacing: 0.02em;
-  color: var(--color-maroon);
-  white-space: nowrap;
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.finalStripCta:hover {
-  opacity: 0.5;
-}
-
-@media (min-width: 768px) {
-  .finalStripFrame {
-    width: 180px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .finalStrip {
-    flex-wrap: nowrap;
-  }
-
-  .finalStripFrame {
-    width: 200px;
-  }
-}
-
-@media (min-width: 768px) {
-  .stripFrame {
-    width: 260px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .strip {
-    justify-content: center;
-    overflow-x: visible;
-  }
-
-  .stripFrame {
-    width: 300px;
-  }
-}

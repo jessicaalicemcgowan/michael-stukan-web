@@ -1,103 +1,181 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useCart } from "@/hooks/useCart";
+import { toRoman } from "@/hooks/useCart";
+import LookDrawer from "@/components/LookDrawer";
+import FadeUp from "@/components/FadeUp";
 import styles from "./LookbookStrip.module.css";
 
+const SPACER = "            ";
+// Matches --dur-slower, kept in sync so the JS-driven swap waits for the
+// CSS opacity transition to actually finish before unmounting.
+const TRANSITION_MS = 1000;
+
 export default function LookbookStrip({ items }) {
-  const [size, setSize] = useState("sml");
-  const [activeId, setActiveId] = useState(null);
-  const { addItem } = useCart();
+  const [expanded, setExpanded] = useState(false);
+  const [gridVisible, setGridVisible] = useState(false);
+  const [stripVisible, setStripVisible] = useState(true);
+  const [activeLook, setActiveLook] = useState(null);
+  const trackRef = useRef(null);
+  const containerRef = useRef(null);
+  const isFirstRender = useRef(true);
+  const loopedItems = [...items, ...items, ...items];
 
-  const active = items.find((item) => item.id === activeId);
+  useEffect(() => {
+    if (expanded) return;
+    const node = trackRef.current;
+    if (!node) return;
+    node.scrollLeft = node.scrollWidth / 3;
+  }, [expanded]);
 
-  const handleAdd = () => {
-    if (!active || active.soldOut) return;
-    addItem({
-      id: active.id,
-      name: active.name,
-      price: active.price,
-      image: active.image,
-      size: "II",
-      colour: active.colour,
-    });
+  // Fades the expanded grid in a beat after it mounts, so opening the
+  // lookbook reads as a soft cross-fade rather than an instant swap.
+  // (gridVisible is already false by the time this runs — either from
+  // its initial state or from the collapse handler below — so the
+  // effect only ever schedules the true flip, never sets state inline.)
+  useEffect(() => {
+    if (!expanded) return undefined;
+    const raf = requestAnimationFrame(() => setGridVisible(true));
+    return () => cancelAnimationFrame(raf);
+  }, [expanded]);
+
+  // Mirrors the same soft fade-in when the collapsed strip reappears
+  // after closing the expanded grid (skipped on first mount, and
+  // stripVisible is already set false by the collapse handler below).
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+    if (expanded) return undefined;
+    const raf = requestAnimationFrame(() => setStripVisible(true));
+    return () => cancelAnimationFrame(raf);
+  }, [expanded]);
+
+  const handleToggle = () => {
+    if (!expanded) {
+      setExpanded(true);
+      return;
+    }
+
+    // Collapsing: fade the grid out, and ease the page back up to the
+    // strip's resting position *while* the grid is still mounted (its own
+    // height doesn't change until it's swapped out, so the container's top
+    // offset — and therefore the scroll target — is already stable). Only
+    // swap the DOM over to the strip once that's had time to land, so the
+    // height collapse happens after we're already sitting still at the
+    // right spot instead of fighting the scroll animation mid-flight.
+    setGridVisible(false);
+    setStripVisible(false);
+    setActiveLook(null);
+
+    const node = containerRef.current;
+    if (node) {
+      const top = node.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+
+    window.setTimeout(() => {
+      setExpanded(false);
+    }, TRANSITION_MS);
   };
 
-  const selectItem = (id) => {
-    setActiveId((current) => (current === id ? null : id));
+  const handleScroll = () => {
+    const node = trackRef.current;
+    if (!node) return;
+    const third = node.scrollWidth / 3;
+    if (node.scrollLeft < third * 0.5) {
+      node.scrollLeft += third;
+    } else if (node.scrollLeft > third * 1.5) {
+      node.scrollLeft -= third;
+    }
   };
 
   return (
-    <div className={styles.lookbook}>
-      <div className={styles.toggle}>
-        <button
-          type="button"
-          className={size === "sml" ? styles.sizeActive : styles.sizeOption}
-          onClick={() => setSize("sml")}
-        >
-          sml
-        </button>
-        <span aria-hidden="true">|</span>
-        <button
-          type="button"
-          className={size === "lrg" ? styles.sizeActive : styles.sizeOption}
-          onClick={() => setSize("lrg")}
-        >
-          lrg
-        </button>
-      </div>
-
-      <div className={size === "lrg" ? styles.stripLrg : styles.stripSml}>
-        {items.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className={styles.frame}
-            data-active={item.id === activeId}
-            onClick={() => selectItem(item.id)}
-            aria-expanded={item.id === activeId}
-          >
-            <Image src={item.image} alt={item.name} fill className={styles.image} />
-          </button>
-        ))}
-      </div>
-
-      <div className={styles.reveal} data-open={Boolean(active)}>
-        <div className={styles.revealInner}>
-          {active && (
-            <>
-              <div className={styles.revealFrame}>
-                <Image src={active.image} alt={active.name} fill className={styles.image} />
-              </div>
-              <div className={styles.revealMeta}>
-                <p className={styles.revealName}>{active.name}</p>
-                <p className={styles.revealPrice}>
-                  {active.soldOut ? "sold out" : active.price}
+    <div ref={containerRef} className={styles.lookbook}>
+      {expanded ? (
+        <div className={styles.gridExpanded} data-visible={gridVisible}>
+          {items.map((item, index) => {
+            const content = (
+              <>
+                <button
+                  type="button"
+                  className={styles.frameLargeButton}
+                  onClick={() => setActiveLook(item)}
+                  aria-label={`Shop products from ${item.name}`}
+                >
+                  <div className={styles.frameLarge}>
+                    <Image src={item.image} alt={item.name} fill className={styles.image} />
+                  </div>
+                </button>
+                <p className={styles.itemCaption}>
+                  {toRoman(index + 1)} / {toRoman(items.length)}
+                  {SPACER}
+                  {item.description}
                 </p>
-                <div className={styles.revealActions}>
-                  {!active.soldOut && (
-                    <button type="button" className={styles.revealAdd} onClick={handleAdd}>
-                      add to bag
-                    </button>
-                  )}
-                  <Link href={`/shop/${active.id}`} className={styles.revealView}>
-                    view product
-                  </Link>
-                  <button
-                    type="button"
-                    className={styles.revealClose}
-                    onClick={() => setActiveId(null)}
-                  >
-                    close
-                  </button>
+                <p className={styles.shopHint}>Shop the look</p>
+              </>
+            );
+
+            // The first two images fade in with the grid itself; the rest
+            // use the same scroll-triggered fade as everywhere else on site.
+            if (index < 2) {
+              return (
+                <div key={item.id} className={styles.itemLarge} data-visible={gridVisible}>
+                  {content}
                 </div>
-              </div>
-            </>
-          )}
+              );
+            }
+
+            return (
+              <FadeUp key={item.id} as="div" className={styles.itemLarge}>
+                {content}
+              </FadeUp>
+            );
+          })}
         </div>
+      ) : (
+        <div
+          ref={trackRef}
+          className={styles.stripCollapsed}
+          data-visible={stripVisible}
+          onScroll={handleScroll}
+        >
+          {loopedItems.map((item, index) => (
+            <button
+              key={`${item.id}-${index}`}
+              type="button"
+              className={styles.itemSmall}
+              onClick={() => setExpanded(true)}
+              aria-label={`View ${item.name} in the expanded lookbook`}
+            >
+              <div className={styles.frameSmall}>
+                <Image src={item.image} alt={item.name} fill className={styles.image} />
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div className={styles.footer}>
+        <button
+          type="button"
+          className={styles.toggle}
+          onClick={handleToggle}
+          aria-expanded={expanded}
+          aria-label={expanded ? "Collapse lookbook" : "Expand lookbook"}
+        >
+          {expanded ? "−" : "+"}
+        </button>
+        {!expanded && (
+          <p className={styles.footerCaption}>
+            {`lookbook${SPACER}Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae nulla bibendum, convallis tortor sed, accumsan elit.`}
+          </p>
+        )}
       </div>
+
+      <LookDrawer look={activeLook} onClose={() => setActiveLook(null)} />
     </div>
   );
 }

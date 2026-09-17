@@ -1,0 +1,439 @@
+.finalCta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+  /* 20px bottom doesn't land on the 8px spacing scale, but it's the
+     confirmed measured target. */
+  padding-block: var(--space-4) 20px;
+  padding-inline: var(--gutter);
+}
+
+.finalCtaLabel {
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-maroon);
+}
+
+.finalCtaLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.finalCtaLink:hover {
+  border-bottom-color: currentColor;
+}
+
+.finalStrip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-items: stretch;
+  /* Interior grid gap matches the outer side margins exactly, both 3x
+     the base gutter from ~500px up to the 768px breakpoint. */
+  gap: calc(var(--gutter) * 3);
+  width: 100%;
+  padding-inline: calc(var(--gutter) * 3);
+  padding-bottom: var(--space-8);
+}
+
+@media (max-width: 500px) {
+  .finalStrip {
+    /* Half the 500-768px value on smaller phones. */
+    gap: calc(var(--gutter) * 1.5);
+    padding-inline: calc(var(--gutter) * 1.5);
+  }
+}
+
+.finalStripItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.finalStripFrame {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200 / 249;
+  border: 2px solid var(--color-maroon);
+  overflow: hidden;
+  /* Extra 2px ring sits just outside the real border via box-shadow (no
+     layout shift) to make the stroke read as 2px thicker on hover. */
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.finalStripItem:hover .finalStripFrame {
+  box-shadow: 0 0 0 1px var(--color-maroon);
+}
+
+.finalStripCta {
+  display: none;
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  white-space: nowrap;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.finalStripCta:hover {
+  border-bottom-color: currentColor;
+}
+
+/* Opt-in (Product Detail page's "continue shopping" CTA): keeps the
+   link visible below 768px too, instead of the sitewide default of
+   hiding it until the row becomes a flex layout. Grid-only positioning
+   (grid-column/order) is scoped to this same max-width query so it
+   doesn't leak into the >=768px flex row below, where order would
+   reorder flex items too and undo the CTA's intended inline position
+   between the 5th and 6th images. */
+@media (max-width: 767px) {
+  .finalStripCtaOnMobile {
+    /* inline-block (not block) so the box — and with it, the border-
+       bottom underline below — shrinks to the text's own width instead
+       of stretching to fill the grid row; justify-self centers that
+       shrunk box within the row rather than relying on text-align,
+       which wouldn't affect the underline's own width. */
+    display: inline-block;
+    grid-column: 1 / -1;
+    justify-self: center;
+    /* Every other grid child keeps the default order (0), so this
+       always renders last — below every image — regardless of where
+       it sits in the DOM relative to the 6th image. */
+    order: 1;
+    padding-top: var(--space-2);
+    /* Mobile has no hover state to reveal the underline, so it stays
+       visible at all times here instead of only on :hover. */
+    border-bottom-color: currentColor;
+  }
+}
+
+@media (min-width: 768px) {
+  .finalStrip {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    /* Bleeds 10px past each side of the viewport — the row runs edge to
+       edge and the first/last images are just barely cropped by it,
+       rather than sitting inset behind the usual gutter. */
+    width: calc(100% + 20px);
+    margin-inline: -10px;
+    padding-inline: 0;
+    /* Percentage gap scales with the row's own (viewport-relative)
+       width instead of sitting at a fixed px value. */
+    gap: 2%;
+    overflow: hidden;
+  }
+
+  .finalStripCta {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .finalStripItem {
+    /* Fluid width: items grow/shrink with the viewport so the row
+       always fills exactly edge-to-edge (plus the bleed) with no
+       gaps, instead of a fixed pixel size. */
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .finalStrip {
+    /* 1.5x the 768-1023px gap. */
+    gap: 3%;
+  }
+}
+
+@media (min-width: 768px) {
+  /* From tablet up (including the largest desktop sizes), drop the
+     first image and let the remaining five scale up to fill the row
+     instead of shrinking six images down to fit. */
+  .finalStrip > .finalStripItem:first-child {
+    display: none;
+  }
+}
+
+.image {
+  object-fit: cover;
+}
+
+/* Price/add-to-bag footer — same markup and styling as ProductCard's own
+   .meta row on the Shop grid, reused verbatim here (unscoped by media
+   query, since it's shared by both the desktop scroll strip and the
+   below-1024px fallback grid) so a strip item matches a Shop grid card
+   exactly when showPrices is on. */
+.meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-family: var(--font);
+  color: var(--color-maroon);
+}
+
+.addColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.add {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  line-height: 0.75;
+  cursor: pointer;
+}
+
+.add:disabled {
+  cursor: not-allowed;
+}
+
+.sizePanel {
+  display: grid;
+  grid-template-rows: minmax(0, 0fr);
+  overflow: hidden;
+  width: 100%;
+  transition: grid-template-rows var(--dur-slow) var(--ease-out);
+}
+
+.sizePanel[data-open="true"] {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.sizePanelInner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+}
+
+.sizeOption {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font);
+  color: inherit;
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.sizeOption:hover {
+  border-bottom-color: currentColor;
+}
+
+.price {
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+}
+
+.soldOut {
+  font-size: var(--text-caption);
+  letter-spacing: 0.03em;
+  color: rgba(74, 35, 45, 0.6);
+}
+
+/* Default (non-homepage) desktop variant: a plain horizontally
+   scrollable row (no auto-scroll — the user drags/scrolls it themselves)
+   with the CTA sitting below the row. Hidden below 1024px (or below
+   768px, when .scrollFromTablet opts in — see the display toggles at
+   the bottom of this section), where .finalStripBelowDesktop (the home
+   variant's strip, reused as-is) takes over instead.
+
+   All the sizing/layout below is unconditional (not media-gated) since
+   it only has any visual effect once one of those toggles switches
+   display to flex/block in the first place — this is what lets the
+   exact same rules serve both the 1024px default and the 768px
+   opt-in without duplicating them. */
+
+.scrollWrapper {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  padding-block: var(--space-4) var(--space-10);
+}
+
+.scrollTrack {
+  display: flex;
+  /* flex-start, not center: with center, opening one item's size
+     panel (or a taller "sold out" item with no panel at all) grows
+     just that one item's height, and centering then re-centers every
+     item in the row against that new tallest sibling — shifting each
+     image's top edge down out of alignment with its neighbors (and,
+     since the row's own box grows/shrinks live as panels open and
+     close, making the images look like they're being cropped against
+     whatever clipped ancestor sits above during that shift). Top-
+     aligning means every item's image starts at the same y regardless
+     of what's happening below it. */
+  align-items: flex-start;
+  /* var(--space-6) (48px) minus the requested 10px. */
+  gap: 38px;
+  width: 100%;
+  /* Reserves enough height for the tallest state any item can reach —
+     image (216px wide × 200/249 aspect-ratio ≈ 269px) + the gap to
+     the meta row (8px) + the "+"/price line (≈24px) + an opened size
+     panel (≈22px). Without this, the row's height is left to
+     auto-size from whatever's rendered at mount, and since
+     overflow-x: auto unavoidably makes overflow-y compute to "auto"
+     too (the CSS overflow spec coerces a "visible" axis to "auto" as
+     soon as the other axis isn't visible — writing overflow-y:
+     visible here doesn't actually opt back out of that), the row
+     becomes a real vertical scroll/clip container. A size panel
+     opening after mount was growing an item taller than that
+     original auto-height, and the extra was getting clipped instead
+     of the row visibly growing — exactly the "scroll down and it's
+     cropped" bug. Reserving the max height up front means the row
+     never needs to grow, so there's nothing left to clip. */
+  min-height: 340px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Hide the native scrollbar (Firefox + IE/Edge legacy) — the row is
+     still scrollable, just without the visible track/thumb. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Same hiding, WebKit/Blink (Chrome, Safari, Edge Chromium). */
+.scrollTrack::-webkit-scrollbar {
+  display: none;
+}
+
+/* Opt-in inset so the first/last frame doesn't start flush against
+   the browser edge — off by default since the collection page's own
+   strip is meant to bleed edge to edge. */
+.scrollTrackInsetLeft {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.scrollItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  /* 70% of the original 280px, then 10% bigger again: 196px × 1.1. */
+  width: 216px;
+  flex-shrink: 0;
+}
+
+.scrollItem:hover {
+  z-index: 1;
+}
+
+.scrollFrame {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 200 / 249;
+  border: 2px solid var(--color-maroon);
+  overflow: hidden;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.scrollItem:hover .scrollFrame {
+  box-shadow: 0 0 0 1px var(--color-maroon);
+}
+
+.scrollCta {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-left: calc(var(--gutter) * 3);
+  /* Shifted 60px right of the standard gutter*3 inset. */
+  padding-right: calc(var(--gutter) * 3 - 60px);
+}
+
+/* Opt-in override (Product Detail page's "continue shopping" CTA):
+   pulls the link in from the right edge of the browser by a viewport-
+   relative amount instead of the standard gutter-based inset above, and
+   sits 30px closer to the product row above it than .scrollWrapper's
+   shared gap (var(--space-3), 24px) would otherwise put it (20px, then
+   a further 30px, then back down 10px twice). */
+.scrollCtaInsetRight {
+  padding-right: 20vw;
+  margin-top: -30px;
+}
+
+/* Border lives on this inner span (sized to the text itself) rather
+   than the flex-end-justified .scrollCta wrapper, so the hover
+   underline only spans "Shop the collection ›" instead of stretching
+   across the whole row. */
+.scrollCtaText {
+  font-family: var(--font);
+  font-size: var(--text-caption);
+  letter-spacing: 0.02em;
+  color: var(--color-maroon);
+  white-space: nowrap;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.scrollCta:hover .scrollCtaText {
+  border-bottom-color: currentColor;
+}
+
+/* Opt-in (scoped via .scrollCtaInsetRight, so only the Product Detail
+   page's "continue shopping" CTA is affected — not the homepage's or
+   Collection page's own "Shop the collection" row, which shares this
+   same .scrollCtaText class): on tablet, this scroll strip is already
+   visible (.scrollFromTablet swaps it in at 768px), but tablet has no
+   hover state to reveal the underline, so it stays visible here
+   instead of only on :hover. Desktop (>=1024px) keeps the hover-only
+   behavior above. */
+@media (max-width: 1023px) {
+  .scrollCtaInsetRight .scrollCtaText {
+    border-bottom-color: currentColor;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scrollWrapper {
+    display: flex;
+  }
+
+  .finalStripBelowDesktop {
+    display: none;
+  }
+}
+
+/* Opt-in: switches from the fallback grid to this same scroll strip
+   starting at tablet (768px) instead of the default 1024px. Applied
+   via the scrollFromTablet class on both .scrollWrapper (to show it
+   early) and .finalStripBelowDesktop (to hide the fallback early) —
+   see the scrollFromTablet prop in ShopCollectionStrip.jsx. */
+@media (min-width: 768px) {
+  .scrollWrapper.scrollFromTablet {
+    display: flex;
+  }
+
+  .finalStripBelowDesktop.scrollFromTablet {
+    display: none;
+  }
+}

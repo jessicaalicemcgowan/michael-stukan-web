@@ -1,0 +1,13 @@
+# Keeps the Netlify deploy upload small by skipping folders Netlify's
+# own build regenerates anyway (node_modules via npm install, .next via
+# next build) plus git history and OS/editor junk that never needs to
+# leave this machine.
+
+node_modules
+.next
+.git
+.DS_Store
+coverage
+out
+build
+.vercel

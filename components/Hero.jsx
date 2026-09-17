@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import styles from "./Hero.module.css";
 
-const LOGO_FADE_MS = 2500;
-const HOLD_MS = 200;
-const REVEAL_DELAY_MS = LOGO_FADE_MS + HOLD_MS;
+const LOGO_START_DELAY_MS = 1000;
+const REVEAL_DELAY_MS = 1500;
+
+export const HERO_REVEAL_MS = LOGO_START_DELAY_MS + REVEAL_DELAY_MS;
 
 function scrollToNext() {
   window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -17,36 +17,55 @@ export default function Hero() {
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
-    const showLogo = window.setTimeout(() => setLogoVisible(true), 50);
-    const reveal = window.setTimeout(() => setRevealed(true), REVEAL_DELAY_MS);
+    const showLogo = window.setTimeout(() => setLogoVisible(true), LOGO_START_DELAY_MS);
+    const reveal = window.setTimeout(() => setRevealed(true), HERO_REVEAL_MS);
     return () => {
       window.clearTimeout(showLogo);
       window.clearTimeout(reveal);
     };
   }, []);
 
+  // Locks page scroll for the duration of the pink loading animation,
+  // releasing it the moment the hero is revealed. globals.css gives
+  // <html> its own explicit overflow-y, which stops body's overflow
+  // from propagating to the viewport — so body alone can't block
+  // scroll here, <html> has to be locked too.
+  useEffect(() => {
+    if (revealed) return undefined;
+    const html = document.documentElement;
+    const { overflow: htmlOverflow } = html.style;
+    const { overflow: bodyOverflow } = document.body.style;
+    html.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = htmlOverflow;
+      document.body.style.overflow = bodyOverflow;
+    };
+  }, [revealed]);
+
   return (
     <section className={styles.hero} data-revealed={revealed}>
-      <Image
-        src="/b5d235f0332967a0d94c2f1e7ed397908fc2e2f9.png"
-        alt="Michael Stukan, Collection I SS27"
-        fill
-        priority
+      <video
+        src="/driesvannoten_1775210400_3866544573632005601_281383630.mp4"
         className={styles.heroImage}
         data-visible={revealed}
+        autoPlay
+        loop
+        muted
+        playsInline
       />
       <div className={styles.logotypeWrap}>
         <img
-          src="/icons/logotype-brush.svg"
+          src="/icons/logotype-brush-ext.svg"
           alt="Michael Stukan"
           className={styles.logotype}
           data-visible={logoVisible && !revealed}
         />
         <img
-          src="/icons/logotype-brush.svg"
+          src="/icons/logotype-brush-ext.svg"
           alt=""
           aria-hidden="true"
-          className={`${styles.logotype} ${styles.logotypeWhite}`}
+          className={`${styles.logotype} ${styles.logotypeReveal}`}
           data-visible={revealed}
         />
       </div>

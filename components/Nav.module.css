@@ -1,82 +1,117 @@
 .nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: grid;
-  grid-template-columns: 40px 1fr 40px;
-  align-items: center;
-  height: 56px;
-  padding-inline: 20px;
-  background: var(--color-bg);
-  opacity: 1;
-  transition: opacity var(--dur-base) var(--ease-out);
-}
-
-.nav[data-hidden="true"] {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  /* Taller than the original 36px so the (now lower) toggle and the
+     brand both land 10px below where they used to sit, while still
+     reading as vertically centered within the bar. */
+  height: 56px;
+  padding-inline: 20px;
+  background: transparent;
+  color: var(--color-maroon);
   opacity: 0;
   pointer-events: none;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    height var(--dur-base) var(--ease-out),
+    opacity 3s var(--ease-soft);
+}
+
+.nav[data-entrance="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav[data-over-hero="false"] {
+  background: rgba(237, 235, 230, 0.92);
+}
+
+/* About page, every screen size — comes after .nav[data-over-hero="false"]
+   above so it wins there too (overHero is always false on that page
+   anyway). Every nav text element already uses color: inherit, so this
+   one declaration recolors the brand, links, "(menu)"/"(close)" toggle
+   and cart dot (fill: currentColor) together, matching the maroon page
+   behind the nav instead of leaving the default beige bar sitting on top
+   of it. */
+.nav[data-on-about="true"] {
+  /* Same reduced opacity as the default beige nav background
+     (rgba(237, 235, 230, 0.92)) — maroon's rgb equivalent (#4A232D). */
+  background: rgba(74, 35, 45, 0.92);
+  /* --color-bg-about, not the plain --color-bg used elsewhere — the
+     About page's own, distinct beige. */
+  color: var(--color-bg-about);
 }
 
 .brand {
-  grid-column: 2;
-  justify-self: center;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
   font-family: var(--font);
   font-size: var(--text-nav);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-maroon);
+  color: inherit;
   white-space: nowrap;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-slower) var(--ease-soft), max-width var(--dur-slower) var(--ease-soft);
+}
+
+.nav[data-over-hero="false"] .brand {
+  opacity: 1;
+  max-width: 200px;
+  pointer-events: auto;
 }
 
 .toggle {
   grid-column: 3;
+  grid-row: 1;
   justify-self: end;
+  align-self: center;
   position: relative;
   z-index: 2;
-  width: 24px;
-  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
+  font-family: var(--font);
+  font-size: var(--text-nav);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  /* The grid column this sits in is a fixed 40px (sized for the old icon);
+     without this, "( MENU )"/"( CLOSE )" wraps onto three lines instead of
+     overflowing past the track's left edge the way .brand already does in
+     its own fixed column. */
+  white-space: nowrap;
 }
 
-.toggleIcon {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
+/* While the mobile menu is open, .toggle otherwise still inherits .nav's
+   own colour — beige on the About page (data-on-about) — but the menu
+   overlay itself (.menu below) always has a plain beige background,
+   never maroon, and its own links are hardcoded to maroon to read
+   against it. Force the same maroon here so "( CLOSE )" doesn't land as
+   near-invisible beige-on-beige. */
+.toggle[data-open="true"] {
+  color: var(--color-maroon);
 }
 
-.toggleIcon span {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--color-maroon);
-  transition: transform var(--dur-fast) var(--ease-out), top var(--dur-fast) var(--ease-out);
+.toggleText {
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
 }
 
-.toggleIcon span:first-child {
-  top: 9px;
-}
-
-.toggleIcon span:last-child {
-  top: 15px;
-}
-
-.toggleIcon[data-open="true"] span:first-child {
-  top: 12px;
-  transform: rotate(45deg);
-}
-
-.toggleIcon[data-open="true"] span:last-child {
-  top: 12px;
-  transform: rotate(-45deg);
+.toggle:hover .toggleText {
+  border-bottom-color: currentColor;
 }
 
 .menu {
@@ -88,8 +123,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-6);
+  gap: var(--space-4);
   background: var(--color-bg);
+  color: var(--color-maroon);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-8px);
@@ -115,7 +151,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-1);
+  gap: 0;
+}
+
+/* Mobile only — Shop sits first in the mobile menu without touching the
+   underlying primaryLinks order (About/Collection/Campaign/Shop), which
+   desktop still relies on. Reset back to source order at the desktop
+   breakpoint below. */
+.linkGroupShop {
+  order: -1;
 }
 
 .link {
@@ -123,32 +167,74 @@
   font-size: var(--text-nav);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-maroon);
-  padding-bottom: 2px;
+  color: inherit;
   border-bottom: 0.5px solid transparent;
-  transition: opacity var(--dur-fast) var(--ease-out);
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
 }
 
 .link:hover {
-  opacity: 0.5;
+  border-bottom-color: currentColor;
+}
+
+/* Collection and Campaign open a dropdown on hover already, so the
+   underline reveal is skipped for just these two (About/Shop keep it).
+   The active-page underline (below) still wins over this if the link
+   also happens to be the current page. */
+.link.linkNoHover:hover {
+  border-bottom-color: transparent;
 }
 
 .linkActive {
-  border-bottom-color: var(--color-maroon);
+  border-bottom-color: currentColor;
+}
+
+.link.linkNoHover.linkActive:hover {
+  border-bottom-color: currentColor;
 }
 
 .dropdown {
+  display: grid;
+  grid-template-rows: 0fr;
+  justify-items: center;
+  overflow: hidden;
+  opacity: 0;
+  transition: grid-template-rows var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out);
+}
+
+.dropdownInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dropdownOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: var(--space-1);
+}
+
+.dropdownLink {
   font-family: var(--font);
   font-size: var(--text-caption);
   letter-spacing: 0.02em;
-  color: var(--color-text-muted);
+  text-transform: uppercase;
+  color: inherit;
   white-space: nowrap;
+  border-bottom: 0.5px solid transparent;
+  transition: border-bottom-color var(--dur-fast) var(--ease-out);
+}
+
+.dropdownLink:hover {
+  border-bottom-color: currentColor;
 }
 
 .cart {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
   background: none;
   border: none;
   cursor: pointer;
@@ -156,27 +242,55 @@
   font-size: var(--text-nav);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-maroon);
+  color: inherit;
 }
 
+/* The dot sits outside the button's own text flow (which is why it's
+   absolutely positioned) so it doesn't factor into the centering of the
+   "(0)" text — the reserved padding-right above keeps it from
+   overrunning the nav's own edge padding. */
+
 .cartDot {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: var(--space-1);
   width: 12px;
   height: 12px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 780px) {
   .nav {
     grid-template-columns: none;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    /* Restores the desktop bar back to its own original height — the
+       mobile-only 56px above doesn't apply here otherwise. */
+    height: 36px;
+    padding-top: 12px;
     justify-content: flex-start;
-    gap: 120px;
+    gap: 0px;
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out),
+      gap 2500ms var(--ease-soft);
+  }
+
+  .nav[data-over-hero="false"] {
+    gap: var(--space-8);
   }
 
   .brand {
     grid-column: auto;
+    grid-row: auto;
     justify-self: auto;
+    align-self: auto;
     order: 1;
+  }
+
+  .nav[data-over-hero="false"] .brand {
+    transition-delay: 1250ms, 1250ms;
   }
 
   .toggle {
@@ -194,6 +308,7 @@
     visibility: visible;
     transform: none;
     background: none;
+    color: inherit;
     transition: none;
   }
 
@@ -211,25 +326,107 @@
     gap: var(--space-6);
   }
 
+  /* On desktop the cart sits at the far right of the row, so the dot's
+     absolute overflow (it's intentionally outside the button's own box —
+     see .cartDot below) was spilling past the nav's own right edge
+     padding. Uses margin, not padding, here: padding would widen the
+     button's own padding box, which is the containing block the dot's
+     left:100% resolves against, pushing the dot out even further. Margin
+     reserves the same space in the flex row without moving that
+     boundary. Reserved here, not on the base rule, since the mobile menu
+     still needs the button's box to be exactly the text's width for its
+     own centering. */
+
+  .cart {
+    margin-right: calc(12px + var(--space-1));
+  }
+
   .linkGroup {
     flex-direction: column;
     align-items: flex-start;
   }
 
+  .linkGroupShop {
+    order: 0;
+  }
+
   .dropdown {
+    display: block;
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: var(--space-1);
+    left: 0;
+    /* The base (mobile) rule sets overflow: hidden for its grid-row
+       slide animation — desktop uses a plain opacity/visibility fade
+       instead, so that's not needed here, and it was clipping the
+       full-bleed background pseudo-element below to this box's own
+       narrow (content-sized) width. */
+    overflow: visible;
+    /* Own background (matching the scrolled nav bar's beige), sized to
+       the dropdown's actual content, rather than growing the nav bar's
+       height by a fixed guess — that broke as soon as a 4th sub-link
+       (SS27/FW27/SS28/FW28) no longer fit within the old fixed bump.
+       Left padding stays 0 so the links still line up flush with the
+       parent link's own left edge. */
+    padding: var(--space-1) var(--space-2) var(--space-1) 0;
+    margin-top: 0;
     opacity: 0;
     visibility: hidden;
     transition: opacity var(--dur-fast) var(--ease-out), visibility var(--dur-fast) var(--ease-out);
-    pointer-events: none;
+  }
+
+  /* Full-bleed background layer, separate from .dropdown's own content
+     box (which stays sized/positioned to the links so they still line
+     up under the parent link) — bleeds edge to edge of the browser
+     instead of only as wide as the longest sub-link. Deliberately
+     oversized and shifted well past both viewport edges (rather than a
+     left:50%/translateX(-50%) centering trick) since that math only
+     centers correctly when the positioning ancestor itself sits at the
+     viewport's center — .dropdown sits wherever its nav link is
+     (Collection, Campaign, ...), never actually centered, so that
+     version left the background sized to the link's own narrow column
+     instead of the full browser width. This guarantees full coverage
+     regardless of where the dropdown sits. */
+  .dropdown::before {
+    content: "";
+    position: absolute;
+    /* The nav bar's own box is a fixed 36px tall (height: 36px + 12px
+       padding-top above), but .dropdown itself starts at top: 100% of
+       .linkGroup — the link text's own short line-box, which sits well
+       inside that 36px, not at its bottom edge (measured ~10.5px short
+       on the live site). Left at top: 0/height: 100%, this layer's
+       translucent background would paint over that same ~10.5px strip
+       that the nav bar itself already covers, and two overlapping
+       rgba(...,0.92) layers of the same color composite to a visibly
+       different (denser) shade than either alone — a seam right where
+       the dropdown opens. Insetting the top by that measured gap makes
+       this layer start exactly where the nav bar's own background ends,
+       so only one translucent layer ever paints any given pixel. */
+    top: 10.5px;
+    height: calc(100% - 10.5px);
+    left: -100vw;
+    width: 300vw;
+    z-index: -1;
+  }
+
+  .nav[data-over-hero="false"] .dropdown::before {
+    background: rgba(237, 235, 230, 0.92);
+  }
+
+  .dropdownInner {
+    align-items: flex-start;
   }
 
   .linkGroup:hover .dropdown {
     opacity: 1;
     visibility: visible;
+  }
+
+  /* About page, desktop only — recolors the Collection/Campaign dropdown
+     background so beige text over it stays legible instead of landing on
+     the default light panel. The nav's own background/text recoloring
+     lives unconditionally near .nav[data-over-hero="false"] above, since
+     it applies at every screen size, not just desktop. */
+  .nav[data-on-about="true"] .dropdown::before {
+    background: rgba(74, 35, 45, 0.92);
   }
 }

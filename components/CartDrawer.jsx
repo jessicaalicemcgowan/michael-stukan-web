@@ -48,7 +48,9 @@ export default function CartDrawer() {
             <p className={styles.title}>Cart ({toRoman(items.length)})</p>
           </div>
           <button type="button" className={styles.close} onClick={closeCart}>
-            close
+            {"( "}
+            <span className={styles.closeText}>CLOSE</span>
+            {" )"}
           </button>
         </div>
 

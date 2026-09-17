@@ -1,3 +1,15 @@
+// fulfilmentType / leadTime stand in for two Shopify product metafields
+// this site doesn't query yet (custom.fulfilment_type, custom.lead_time —
+// see Phase 2 in CLAUDE.md, "Do not connect Sanity or Shopify yet"). Kept
+// as plain fields on the same hardcoded product object today so the PDP
+// can be built against the real shape now and swapped for a live
+// Shopify query later with no component changes.
+//
+// fulfilmentType is one of "available" | "made_to_order" and is a
+// separate concern from soldOut (Shopify's availableForSale/inventory
+// state): a made_to_order product stays purchasable even at zero
+// inventory, so soldOut never gates it — see getFulfilmentStatus below.
+// leadTime (e.g. "6–8 weeks") only applies to made_to_order products.
 export const products = [
   {
     id: 1,
@@ -6,6 +18,8 @@ export const products = [
     category: "dresses",
     colour: "multicolour",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/2c8609148bc55cc04ffa38160daacd8eef90f2fc.png",
     description:
       "A jacquard dress woven in small batches exclusively for Collection I, cut with a dropped shoulder and raw hem.",
@@ -17,6 +31,8 @@ export const products = [
     category: "shirts",
     colour: "light",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/40cfcde6ce75df0300e02003f4a300d5efbce630.png",
     description:
       "A boxy oxford shirt in brushed cotton, finished with mismatched buttons sourced from deadstock.",
@@ -28,6 +44,8 @@ export const products = [
     category: "accessories",
     colour: "bright",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/d16b2a8a716f1aff81a776102cfaea579e6e609a.png",
     description:
       "A hand-dyed silk scarf, printed from an original Richard Kilroy sketch and finished with a raw edge.",
@@ -38,7 +56,11 @@ export const products = [
     price: "",
     category: "dresses",
     colour: "light",
+    // Ordinary sold out: fulfilmentType stays "available", so soldOut is
+    // what actually gates it.
     soldOut: true,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/d83dfc612a8476e2dc3e6d4c1bd991b10fd07918.png",
     description:
       "A structured dress built over an internal wire frame, designed to hold its shape away from the body.",
@@ -49,7 +71,12 @@ export const products = [
     price: "199£",
     category: "knits",
     colour: "dark",
-    soldOut: false,
+    // Made to order, and deliberately zero-inventory (soldOut: true) —
+    // proves getFulfilmentStatus ignores soldOut for made_to_order
+    // products instead of treating them as unavailable.
+    soldOut: true,
+    fulfilmentType: "made_to_order",
+    leadTime: "6–8 weeks",
     image: "/810e6f402ef0c401acd416ccd3810a0131ec8715.png",
     description:
       "A heavyweight knit jacket in raw wool, cut long with dropped shoulders and a raw-edge collar.",
@@ -61,6 +88,8 @@ export const products = [
     category: "shirts",
     colour: "patterned",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/28bc13f77ef92fd92935737a84e7fa06112f708e.png",
     description:
       "A hand-striped cotton shirt, each run subtly different from the last since the pattern is painted, not printed.",
@@ -72,6 +101,8 @@ export const products = [
     category: "shirts",
     colour: "light",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/76120a8e5ea863917d96656cbe20ee24b45b6a87.png",
     description:
       "A tan cotton shirt with a fuller cut through the body, referencing workwear silhouettes of the 1970s.",
@@ -83,7 +114,12 @@ export const products = [
     category: "knits",
     colour: "dark",
     soldOut: false,
-    image: "/19cf7050de4e0127cc5053b8aa40160ea96cd6c7.png",
+    // Made to order but still in stock right now — shows the lead time
+    // even though soldOut is false, since the label always follows
+    // fulfilmentType first.
+    fulfilmentType: "made_to_order",
+    leadTime: "4–6 weeks",
+    image: "/810e6f402ef0c401acd416ccd3810a0131ec8715.png",
     description:
       "A dark wool jacket with raw-edge tailoring, finished entirely by hand at the studio in East London.",
   },
@@ -94,6 +130,8 @@ export const products = [
     category: "trousers",
     colour: "dark",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/2c8609148bc55cc04ffa38160daacd8eef90f2fc.png",
     description:
       "A wide-leg trouser in washed cotton twill, cut high on the waist with a single pleat.",
@@ -105,6 +143,8 @@ export const products = [
     category: "knits",
     colour: "light",
     soldOut: false,
+    fulfilmentType: "available",
+    leadTime: null,
     image: "/40cfcde6ce75df0300e02003f4a300d5efbce630.png",
     description:
       "A beige knit in raw cashmere, cut oversized and left unhemmed at the cuff and waist.",
@@ -115,3 +155,13 @@ export const categories = ["dresses", "shirts", "trousers", "knits", "accessorie
 export const colours = ["dark", "light", "bright", "multicolour", "patterned"];
 
 export const sizes = ["I", "II", "III", "IV", "V"];
+
+// Single source of truth for a product's purchasability, used everywhere
+// a "+"/Add to Cart control or a sold-out label is rendered (PDP, Shop
+// grid, ShopCollectionStrip, LookDrawer) so they never disagree about
+// the same product. Bespoke is intentionally not a state here — it's a
+// separate customer journey, not a fulfilment type of the standard PDP.
+export function getFulfilmentStatus(product) {
+  if (product.fulfilmentType === "made_to_order") return "made_to_order";
+  return product.soldOut ? "sold_out" : "available";
+}
