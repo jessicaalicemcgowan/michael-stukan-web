@@ -11,6 +11,16 @@ const nextConfig = {
   //
   // output: "export",
   // images: { unoptimized: true },
+
+  // next/image refuses to load from any domain not explicitly listed
+  // here — needed for Sanity-hosted content images and Shopify-hosted
+  // product images, both of which are on external CDNs.
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.sanity.io" },
+      { protocol: "https", hostname: "cdn.shopify.com" },
+    ],
+  },
 };
 
 export default nextConfig;
