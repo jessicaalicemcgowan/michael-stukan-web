@@ -12,7 +12,9 @@ function scrollToNext() {
   window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 }
 
-export default function Hero() {
+const FALLBACK_VIDEO = "/driesvannoten_1775210400_3866544573632005601_281383630.mp4";
+
+export default function Hero({ videoSrc }) {
   const [logoVisible, setLogoVisible] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
@@ -46,7 +48,7 @@ export default function Hero() {
   return (
     <section className={styles.hero} data-revealed={revealed}>
       <video
-        src="/driesvannoten_1775210400_3866544573632005601_281383630.mp4"
+        src={videoSrc || FALLBACK_VIDEO}
         className={styles.heroImage}
         data-visible={revealed}
         autoPlay

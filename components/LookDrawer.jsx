@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
-import { products, sizes, getFulfilmentStatus } from "@/data/products";
+import { sizes, getFulfilmentStatus } from "@/data/products";
 import styles from "./LookDrawer.module.css";
 
 // I, II, III, IV — matches ProductCard's own compact size row (the PDP's
 // full size selector still offers all five).
 const cardSizes = sizes.slice(0, 4);
 
+// `look.products` arrives already resolved to full Shopify product
+// objects (image/price/inventory) by whoever builds the look — this
+// drawer no longer looks anything up itself, so it always reflects
+// live Shopify data rather than a stale local copy.
 export default function LookDrawer({ look, onClose }) {
   const { addItem } = useCart();
   const [openSizesFor, setOpenSizesFor] = useState(null);
   const isOpen = Boolean(look);
-  const lookProducts = look
-    ? look.products
-        .map((id) => products.find((product) => product.id === id))
-        .filter(Boolean)
-    : [];
+  const lookProducts = look?.products || [];
 
   useEffect(() => {
     if (!isOpen) return undefined;

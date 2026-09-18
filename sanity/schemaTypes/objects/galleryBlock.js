@@ -5,6 +5,9 @@
 //                  reads "I / III" style, driven by position, not stored
 //   shopTheLook  — a captioned image whose "+" opens a Shop the Look
 //                  slider for the tagged products
+//   stack        — two stacked images (small over tall) sharing one
+//                  caption, optionally shoppable — matches the Collection
+//                  page's "module 4" treatment
 //   video        — a captioned video whose "+" opens the video slider
 //   textImage    — About-page-only variant (gallery Row 7): a text block
 //                  next to an image instead of image(s) alone
@@ -22,6 +25,7 @@ const galleryBlock = {
           { title: "Image", value: "image" },
           { title: "Carousel", value: "carousel" },
           { title: "Shop the look", value: "shopTheLook" },
+          { title: "Stack (two images)", value: "stack" },
           { title: "Video", value: "video" },
           { title: "Text + image (About page only)", value: "textImage" },
         ],
@@ -35,7 +39,22 @@ const galleryBlock = {
       title: "Image",
       type: "image",
       options: { hotspot: true },
-      hidden: ({ parent }) => !["image", "shopTheLook", "textImage"].includes(parent?.blockType),
+      hidden: ({ parent }) =>
+        !["image", "shopTheLook", "stack", "textImage"].includes(parent?.blockType),
+    },
+    {
+      name: "secondaryImage",
+      title: "Second image (bottom of stack)",
+      type: "image",
+      options: { hotspot: true },
+      hidden: ({ parent }) => parent?.blockType !== "stack",
+    },
+    {
+      name: "tint",
+      title: "Darken with tint overlay",
+      type: "boolean",
+      initialValue: false,
+      hidden: ({ parent }) => parent?.blockType !== "image",
     },
     {
       name: "images",
@@ -55,14 +74,14 @@ const galleryBlock = {
       name: "caption",
       title: "Caption",
       type: "string",
-      hidden: ({ parent }) => !["image", "carousel"].includes(parent?.blockType),
+      hidden: ({ parent }) => !["image", "carousel", "stack", "video"].includes(parent?.blockType),
     },
     {
       name: "products",
       title: "Tagged products (Shop the look)",
       type: "array",
       of: [{ type: "shopifyProductRef" }],
-      hidden: ({ parent }) => parent?.blockType !== "shopTheLook",
+      hidden: ({ parent }) => !["shopTheLook", "stack"].includes(parent?.blockType),
     },
     {
       name: "text",

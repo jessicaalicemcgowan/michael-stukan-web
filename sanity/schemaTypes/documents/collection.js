@@ -28,8 +28,15 @@ const collection = {
       name: "headerImages",
       title: "Header images",
       type: "array",
-      of: [{ type: "captionedImage" }],
+      of: [{ type: "image", options: { hotspot: true } }],
       validation: (Rule) => Rule.max(5),
+      group: "module6",
+    },
+    {
+      name: "headerCaption",
+      title: "Header caption",
+      description: "One shared caption shown below the whole header carousel.",
+      type: "string",
       group: "module6",
     },
 
@@ -84,9 +91,16 @@ const collection = {
       group: "module4",
     },
 
-    // Module 3 — Campaign CTA (repeated; video should match this
-    // collection's campaign — resolved via the campaign document's
-    // reference back to this collection, not stored here)
+    // Module 3 — Campaign CTA (repeated on this page, below the shop
+    // strip). Stored here (rather than derived from the campaign
+    // document) because the teaser clip shown here doesn't have to be
+    // one of the campaign page's own blocks.
+    {
+      name: "campaignTeaserVideo",
+      title: "Campaign CTA — teaser video",
+      type: "mediaAsset",
+      group: "module4",
+    },
   ],
   groups: [
     { name: "module6", title: "6. Header" },

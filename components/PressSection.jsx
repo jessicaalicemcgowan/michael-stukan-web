@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCursorImages } from "@/hooks/useCursorImages";
 import styles from "./PressSection.module.css";
 
-const cursorImages = [
+const FALLBACK_IMAGES = [
   "/ffe02ae682b0bd4f88ee0ccad474e1cbc17180ed.png",
   "/dddbc089c06c195476610db484bdc1f2320e1b70.png",
   "/7e45adf7b92fd4248484ab46817512097bef01c5.png",
@@ -14,7 +14,7 @@ const cursorImages = [
   "/85fb268ddab3461c50eea3147b99fa87b44c4e05.png",
 ];
 
-const press = [
+const FALLBACK_PRESS = [
   { name: "British Vogue", url: "https://www.vogue.co.uk" },
   { name: "Vogue USA", url: "https://www.vogue.com" },
   { name: "T Style Magazine", url: "https://www.nytimes.com/section/t-magazine" },
@@ -23,7 +23,9 @@ const press = [
   { name: "W Magazine", url: "https://www.wmagazine.com" },
 ];
 
-export default function PressSection() {
+export default function PressSection({ images, press }) {
+  const cursorImages = images?.length ? images : FALLBACK_IMAGES;
+  const pressList = press?.length ? press : FALLBACK_PRESS;
   const { containerRef, positions, active } = useCursorImages(cursorImages.length);
 
   return (
@@ -66,7 +68,7 @@ export default function PressSection() {
         <div className={styles.pressGroup}>
           <p className={styles.label}>Press</p>
           <ul className={styles.list}>
-            {press.map(({ name, url }) => (
+            {pressList.map(({ name, url }) => (
               <li key={name}>
                 <a
                   href={url}
