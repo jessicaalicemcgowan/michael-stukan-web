@@ -95,6 +95,7 @@ export default async function Collection() {
     src: product.image,
     alt: product.name,
     productId: product.id,
+    product,
   }));
 
   const campaignTeaserVideo = fileUrl(data?.campaignTeaserVideo?.video);

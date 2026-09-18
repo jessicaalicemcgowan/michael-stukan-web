@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FadeUp from "@/components/FadeUp";
 import { useCart } from "@/hooks/useCart";
-import { products, sizes, getFulfilmentStatus } from "@/data/products";
+import { sizes, getFulfilmentStatus } from "@/data/products";
 import styles from "./ShopCollectionStrip.module.css";
 
 // I, II, III, IV — matches ProductCard's own compact size row.
@@ -31,7 +31,10 @@ export default function ShopCollectionStrip({
   const { addItem } = useCart();
   const [openKey, setOpenKey] = useState(null);
 
-  const findProduct = (id) => products.find((product) => product.id === id);
+  // `img.product` arrives already resolved (by whoever built the images
+  // array) to a full Shopify product object — no local lookup needed, so
+  // this always reflects live price/inventory rather than a stale copy.
+  const findProduct = (img) => img.product;
 
   const toggleSizes = (key, product) => {
     // Made-to-order products stay addable even at zero inventory — see
@@ -53,7 +56,7 @@ export default function ShopCollectionStrip({
   };
 
   const renderMeta = (key, img) => {
-    const product = findProduct(img.productId);
+    const product = findProduct(img);
     if (!product) return null;
     const open = openKey === key;
     const isSoldOut = getFulfilmentStatus(product) === "sold_out";

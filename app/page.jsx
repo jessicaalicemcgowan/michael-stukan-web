@@ -58,6 +58,7 @@ export default async function Home() {
     src: product.image,
     alt: product.name,
     productId: product.id,
+    product,
   }));
 
   const heroVideo = fileUrl(home?.headerMedia?.video);

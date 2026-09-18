@@ -174,6 +174,7 @@ export default function ProductDetail({ product, related }) {
           src: item.image,
           alt: item.name,
           productId: item.id,
+          product: item,
         }))}
         showHeading={false}
         ctaText="Continue shopping"
