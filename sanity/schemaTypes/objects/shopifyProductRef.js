@@ -26,3 +26,5 @@ const shopifyProductRef = {
     },
   },
 };
+
+export default shopifyProductRef;
